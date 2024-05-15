@@ -1,0 +1,33 @@
+{
+  "extends": [
+    "next/core-web-vitals",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended"
+  ],
+  "rules": {
+    "indent": [
+      "error",
+      4
+    ],
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "quotes": [
+      "error",
+      "double"
+    ],
+    "semi": [
+      "error",
+      "never"
+    ],
+    "no-await-in-loop": "error",
+    "no-duplicate-imports": "error",
+    "no-self-compare": "error",
+    "no-unreachable-loop": "error",
+    "no-use-before-define": "error",
+    "react/react-in-jsx-scope": "off"
+  }
+}
