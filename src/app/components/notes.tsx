@@ -13,6 +13,8 @@ import MenuItem from "@mui/material/MenuItem"
 
 import * as data from "./data" // For testing
 
+const toDos = data.toDos.sort((a, b) => Date.parse(b.date) - Date.parse(a.date))
+
 const Accordion = styled((props: AccordionProps) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
 ))(({ theme }) => ({
@@ -49,7 +51,7 @@ const AccordionSummary = styled((props: AccordionSummaryProps) => (
     },
 }))
 
-function addNotes(tasks: data.Task[]) {
+function addNotes(tasks: data.Task[], indexDay: number) {
     const elements: JSX.Element[] = []
     
     let i = 1
@@ -57,8 +59,10 @@ function addNotes(tasks: data.Task[]) {
         elements.push(
             <div className="w-full" key={"task" + i}>
                 <FormControlLabel
+                    data-day={indexDay}
+                    data-task={i - 1}
                     control={
-                        <Checkbox 
+                        <Checkbox
                             sx={{
                                 color: "secondary.main",
                                 "&.Mui-checked": {
@@ -88,6 +92,7 @@ export default function Notes() {
     
     const handleContextMenu = (event: React.MouseEvent) => {
         event.preventDefault()
+
         setContextMenu(
             contextMenu === null
                 ? {
@@ -96,6 +101,13 @@ export default function Notes() {
                 }
                 : null,
         )
+
+        const dayIndex = event.target["parentNode" as keyof object]["dataset"]["day"]
+        const taskIndex = event.target["parentNode" as keyof object]["dataset"]["task"]
+        if (dayIndex && taskIndex) {
+            console.log(toDos[dayIndex].tasks[taskIndex])
+        }
+        //console.log(event)
     }
     
     const handleClose = () => {
@@ -110,7 +122,7 @@ export default function Notes() {
         }
     
     let i = 1
-    data.toDos.forEach(day => {
+    toDos.forEach(day => {
         elements.push(
             <Accordion key={"day" + i}
                 expanded={expanded === "panel" + i} onChange={handleChange("panel" + i)}
@@ -122,7 +134,7 @@ export default function Notes() {
                 </AccordionSummary>
                 <AccordionDetails>
                     <div onContextMenu={handleContextMenu} style={{ cursor: "context-menu" }}>
-                        {addNotes(day.tasks)}
+                        {addNotes(day.tasks, i - 1)}
 
                         <Menu
                             open={contextMenu !== null}
