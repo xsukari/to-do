@@ -1,11 +1,15 @@
 "use client"
+import React from "react"
 import Typography from "@mui/material/Typography"
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp"
 import MuiAccordion, { AccordionProps } from "@mui/material/Accordion"
 import MuiAccordionSummary, { AccordionSummaryProps } from "@mui/material/AccordionSummary"
 import MuiAccordionDetails from "@mui/material/AccordionDetails"
 import { styled } from "@mui/material/styles"
-import React from "react"
+import Checkbox from "@mui/material/Checkbox"
+import FormControlLabel from "@mui/material/FormControlLabel"
+
+import * as data from "./data"
 
 const Accordion = styled((props: AccordionProps) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -43,33 +47,69 @@ const AccordionSummary = styled((props: AccordionSummaryProps) => (
     },
 }))
 
+function addNotes(tasks: data.Task[]) {
+    const elements: JSX.Element[] = []
+    
+    let i = 1
+    tasks.forEach(task => {
+        elements.push(
+            <div className="w-full" key={"task" + i}>
+                <FormControlLabel
+                    control={
+                        <Checkbox 
+                            sx={{
+                                color: "secondary.main",
+                                "&.Mui-checked": {
+                                    color: "secondary.main",
+                                },
+                            }}
+                        />
+                    } 
+                    label={task.name}
+                />
+            </div>
+        )
+
+        i++
+    })
+
+    return elements
+}
+
 export default function Notes() {
+    const elements: JSX.Element[] = []
+
     const [expanded, setExpanded] = React.useState<string | false>("panel1")
 
     const handleChange =
         (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
             setExpanded(newExpanded ? panel : false)
         }
-
-    return (
-        <div>
-            <Accordion 
-                expanded={expanded === "panel1"} onChange={handleChange("panel1")}
+    
+    let i = 1
+    data.toDos.forEach(day => {
+        elements.push(
+            <Accordion key={"day" + i}
+                expanded={expanded === "panel" + i} onChange={handleChange("panel" + i)}
                 slotProps={{ transition: { unmountOnExit: true } }}
                 sx={{ bgcolor: "primary.main", color: "text.primary" }}
             >
-                <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-                    <Typography>Collapsible Group Item #1</Typography>
+                <AccordionSummary aria-controls={"panel" + i + "d-content"} id={"panel" + i + "d-header"}>
+                    <Typography>{day.date}</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <Typography>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                        malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor
-                        sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-                        sit amet blandit leo lobortis eget.
-                    </Typography>
+                    {addNotes(day.tasks)}
                 </AccordionDetails>
             </Accordion>
+        )
+
+        i++
+    })
+
+    return elements
+    /*
+        <div>
+
             <Accordion 
                 expanded={expanded === "panel2"} onChange={handleChange("panel2")}
                 slotProps={{ transition: { unmountOnExit: true } }}
@@ -105,5 +145,5 @@ export default function Notes() {
                 </AccordionDetails>
             </Accordion>
         </div>
-    )
+    */
 }
