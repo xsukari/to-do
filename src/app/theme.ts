@@ -12,11 +12,15 @@ const theme = responsiveFontSizes(
     createTheme({
         palette: {
             primary: {
-                main: "#3f50b5",
+                main: "#009688",
             },
             secondary: {
-                main: "#f44336",
+                main: "#ffffff",
             },
+            text: {
+                primary: "#ffffff",
+                secondary: "#000000"
+            }
         },
         typography: {
             fontFamily: roboto.style.fontFamily,
