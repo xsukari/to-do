@@ -1,15 +1,17 @@
 "use client"
 import React from "react"
 import Typography from "@mui/material/Typography"
+import { styled } from "@mui/material/styles"
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp"
 import MuiAccordion, { AccordionProps } from "@mui/material/Accordion"
 import MuiAccordionSummary, { AccordionSummaryProps } from "@mui/material/AccordionSummary"
 import MuiAccordionDetails from "@mui/material/AccordionDetails"
-import { styled } from "@mui/material/styles"
 import Checkbox from "@mui/material/Checkbox"
 import FormControlLabel from "@mui/material/FormControlLabel"
+import Menu from "@mui/material/Menu"
+import MenuItem from "@mui/material/MenuItem"
 
-import * as data from "./data"
+import * as data from "./data" // For testing
 
 const Accordion = styled((props: AccordionProps) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -79,6 +81,27 @@ function addNotes(tasks: data.Task[]) {
 export default function Notes() {
     const elements: JSX.Element[] = []
 
+    const [contextMenu, setContextMenu] = React.useState<{
+        mouseX: number;
+        mouseY: number;
+    } | null>(null)
+    
+    const handleContextMenu = (event: React.MouseEvent) => {
+        event.preventDefault()
+        setContextMenu(
+            contextMenu === null
+                ? {
+                    mouseX: event.clientX + 2,
+                    mouseY: event.clientY - 6,
+                }
+                : null,
+        )
+    }
+    
+    const handleClose = () => {
+        setContextMenu(null)
+    }
+
     const [expanded, setExpanded] = React.useState<string | false>("panel1")
 
     const handleChange =
@@ -98,7 +121,22 @@ export default function Notes() {
                     <Typography>{day.date}</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                    {addNotes(day.tasks)}
+                    <div onContextMenu={handleContextMenu} style={{ cursor: "context-menu" }}>
+                        {addNotes(day.tasks)}
+
+                        <Menu
+                            open={contextMenu !== null}
+                            onClose={handleClose}
+                            anchorReference="anchorPosition"
+                            anchorPosition={
+                                contextMenu !== null
+                                    ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
+                                    : undefined
+                            }
+                        >
+                            <MenuItem onClick={handleClose} sx={{ color: "text.secondary" }}>Edit</MenuItem>
+                        </Menu>
+                    </div>
                 </AccordionDetails>
             </Accordion>
         )
