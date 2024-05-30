@@ -8,11 +8,8 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      width: {
-         a4: '210mm',
-      },
-      height: {
-        a4: '297mm',
+      colors: {
+        "main" : "#009688",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
