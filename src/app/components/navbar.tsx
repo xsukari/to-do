@@ -31,7 +31,7 @@ const style = {
 }
 
 export default function Navbar() {
-    const [date, setDate] = React.useState<Dayjs | null>(dayjs().add(1, "days"))
+    const [date, setDate] = React.useState<Dayjs | null>(dayjs().add(1, "days").set("seconds", 0))
     const [task, setTask] = React.useState<string | null>(null)
     const [open, setOpen] = React.useState(false)
     const handleOpen = () => setOpen(true)
