@@ -17,8 +17,8 @@ const toDos = data.toDos.sort((a, b) => Date.parse(b.date) - Date.parse(a.date))
 
 const Accordion = styled((props: AccordionProps) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
-))(({ theme }) => ({
-    border: `0px solid ${theme.palette.divider}`,
+))(( ) => ({
+    border: "0px",
     "&:not(:last-child)": {
         borderBottom: 0,
     },
@@ -29,7 +29,7 @@ const Accordion = styled((props: AccordionProps) => (
 
 const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
     padding: theme.spacing(2),
-    borderTop: "0px solid rgba(0, 0, 0, .125)",
+    borderTop: "0px",
 }))
 
 const AccordionSummary = styled((props: AccordionSummaryProps) => (
@@ -38,10 +38,7 @@ const AccordionSummary = styled((props: AccordionSummaryProps) => (
         {...props}
     />
 ))(({ theme }) => ({
-    backgroundColor:
-        theme.palette.mode === "dark"
-            ? "rgba(255, 255, 255, .05)"
-            : "rgba(0, 0, 0, .03)",
+    backgroundColor: "rgba(0, 0, 0, .03)",
     flexDirection: "row-reverse",
     "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
         transform: "rotate(90deg)",
@@ -51,7 +48,7 @@ const AccordionSummary = styled((props: AccordionSummaryProps) => (
     },
 }))
 
-function addNotes(tasks: data.Task[], indexDay: number) {
+function addTodos(tasks: data.Task[], indexDay: number) {
     const elements: JSX.Element[] = []
     
     let i = 1
@@ -82,7 +79,7 @@ function addNotes(tasks: data.Task[], indexDay: number) {
     return elements
 }
 
-export default function Notes() {
+export default function Todos() {
     const elements: JSX.Element[] = []
 
     const [contextMenu, setContextMenu] = React.useState<{
@@ -134,7 +131,7 @@ export default function Notes() {
                 </AccordionSummary>
                 <AccordionDetails>
                     <div onContextMenu={handleContextMenu} style={{ cursor: "context-menu" }}>
-                        {addNotes(day.tasks, i - 1)}
+                        {addTodos(day.tasks, i - 1)}
 
                         <Menu
                             open={contextMenu !== null}
