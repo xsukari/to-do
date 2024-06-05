@@ -1,4 +1,4 @@
-import Notes from "./components/todos"
+import Todos from "./components/todos"
 import Navbar from "./components/navbar"
 
 export default function Home() {
@@ -10,7 +10,7 @@ export default function Home() {
                 </div>
 
                 <div className="w-3/4 m-auto mt-12">
-                    <Notes />
+                    <Todos />
                 </div>
             </div>
         </main>
