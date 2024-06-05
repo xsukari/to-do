@@ -11,7 +11,7 @@ import FormControlLabel from "@mui/material/FormControlLabel"
 import Menu from "@mui/material/Menu"
 import MenuItem from "@mui/material/MenuItem"
 
-import * as data from "./data" // For testing
+import * as data from "./data/example" // For testing
 
 const toDos = data.toDos.sort((a, b) => Date.parse(b.date) - Date.parse(a.date))
 
