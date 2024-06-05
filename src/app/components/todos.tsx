@@ -68,7 +68,7 @@ function addTodos(tasks: data.Task[], indexDay: number) {
                             }}
                         />
                     } 
-                    label={task.name}
+                    label={task.due + " - " + task.name}
                 />
             </div>
         )
