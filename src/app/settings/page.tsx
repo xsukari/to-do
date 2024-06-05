@@ -1,5 +1,6 @@
-import Todos from "./components/todos"
 import Navbar from "./components/navbar"
+import UserSettings from "./components/user_settings"
+import AdminSettings from "./components/admin_settings"
 
 export default function Home() {
     return (
@@ -10,7 +11,8 @@ export default function Home() {
                 </div>
 
                 <div className="w-3/4 m-auto mt-12">
-                    <Todos />
+                    <UserSettings />
+                    <AdminSettings />
                 </div>
             </div>
         </main>
