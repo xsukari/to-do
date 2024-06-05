@@ -1,6 +1,7 @@
 import AddIcon from "@mui/icons-material/Add"
 import SettingsIcon from "@mui/icons-material/Settings"
 import { IconButton } from "@mui/material"
+import Link from "next/link"
 import PropTypes from "prop-types"
 
 interface Props {
@@ -17,9 +18,11 @@ export const Bar = ({ handleOpen }: Props) => {
                 </IconButton>
             </div>
             <div className="items-end mr-2 my-1">
-                <IconButton aria-label="settings" color="secondary" size="large">
-                    <SettingsIcon fontSize="inherit" />
-                </IconButton>
+                <Link href="/settings">
+                    <IconButton aria-label="settings" color="secondary" size="large">
+                        <SettingsIcon fontSize="inherit" />
+                    </IconButton>
+                </Link>
             </div>
         </div>
     )
