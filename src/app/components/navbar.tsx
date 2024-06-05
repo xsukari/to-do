@@ -1,7 +1,7 @@
 "use client"
 import React from "react"
 import Bar from "./bar"
-import Addmodal from "./addmodal"
+import Todo_modal from "./todo_modal"
 import ModalState from "./hooks/modal"
 
 export default function Navbar() {
@@ -10,7 +10,7 @@ export default function Navbar() {
     return (
         <div>
             <Bar handleOpen={handleOpen} />
-            <Addmodal isOpen={isOpen} handleClose={handleClose} />
+            {isOpen && <Todo_modal isOpen={isOpen} handleClose={handleClose} />}
         </div>
     )
 }

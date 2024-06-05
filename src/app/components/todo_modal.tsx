@@ -35,7 +35,7 @@ interface Props {
 }
 
 export const Addmodal = ({ isOpen, handleClose}: Props) => {
-    const [date, setDate] = React.useState<Dayjs | null>(dayjs().add(1, "days").set("seconds", 0))
+    const [date, setDate] = React.useState<Dayjs | null>(dayjs().add(2, "hours").set("seconds", 0))
     const [task, setTask] = React.useState<string | null>(null)
 
     return (
