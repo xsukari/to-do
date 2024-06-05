@@ -34,7 +34,7 @@ interface Props {
     handleClose: () => void,
 }
 
-export const Addmodal = ({ isOpen, handleClose}: Props) => {
+export const TodoModal = ({ isOpen, handleClose}: Props) => {
     const [date, setDate] = React.useState<Dayjs | null>(dayjs().add(2, "hours").set("seconds", 0))
     const [task, setTask] = React.useState<string | null>(null)
 
@@ -128,9 +128,9 @@ export const Addmodal = ({ isOpen, handleClose}: Props) => {
     )
 }
 
-Addmodal.propTypes = {
+TodoModal.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
 }
 
-export default Addmodal
+export default TodoModal
