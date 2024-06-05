@@ -29,12 +29,18 @@ importers:
       '@mui/x-date-pickers':
         specifier: ^7.6.1
         version: 7.6.1(@emotion/react@11.11.4(@types/react@18.2.79)(react@18.2.0))(@emotion/styled@11.11.5(@emotion/react@11.11.4(@types/react@18.2.79)(react@18.2.0))(@types/react@18.2.79)(react@18.2.0))(@mui/material@5.15.18(@emotion/react@11.11.4(@types/react@18.2.79)(react@18.2.0))(@emotion/styled@11.11.5(@emotion/react@11.11.4(@types/react@18.2.79)(react@18.2.0))(@types/react@18.2.79)(react@18.2.0))(@types/react@18.2.79)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@types/react@18.2.79)(dayjs@1.11.11)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@types/prop-types':
+        specifier: ^15.7.12
+        version: 15.7.12
       dayjs:
         specifier: ^1.11.11
         version: 1.11.11
       next:
         specifier: 14.2.2
         version: 14.2.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      prop-types:
+        specifier: ^15.8.1
+        version: 15.8.1
       react:
         specifier: ^18
         version: 18.2.0
