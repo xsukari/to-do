@@ -36,7 +36,7 @@ interface Props {
 
 export const TodoModal = ({ isOpen, handleClose}: Props) => {
     const [date, setDate] = React.useState<Dayjs | null>(dayjs().add(2, "hours").set("seconds", 0))
-    const [task, setTask] = React.useState<string | null>(null)
+    const [task, setTask] = React.useState<string | null>("")
 
     return (
         <Modal
