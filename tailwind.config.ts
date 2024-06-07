@@ -10,7 +10,8 @@ const config: Config = {
         extend: {
             colors: {
                 "main" : "#009688",
-                "control": "rgba(0, 0, 0, .09)"
+                "bar": "rgba(0, 0, 0, .09)",
+                "panel": "rgba(0, 0, 0, .03)",
             },
             backgroundImage: {
                 "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
