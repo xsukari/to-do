@@ -15,7 +15,7 @@ import Checkbox from "@mui/material/Checkbox"
 import Button from "@mui/material/Button"
 import PropTypes from "prop-types"
 
-const style = {
+const modalStyle = {
     position: "absolute",
     top: "50%",
     left: "50%",
@@ -54,7 +54,7 @@ export const TodoModal = ({ isOpen, handleClose}: Props) => {
             }}
         >
             <Fade in={isOpen}>
-                <Box sx={style}>
+                <Box sx={modalStyle}>
                     <TextField
                         required
                         label="To do"
