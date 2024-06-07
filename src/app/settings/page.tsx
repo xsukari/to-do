@@ -11,8 +11,12 @@ export default function Home() {
                 </div>
 
                 <div className="w-3/4 m-auto mt-12">
-                    <UserSettings />
-                    <AdminSettings />
+                    <div className="mb-12">
+                        <UserSettings />
+                    </div>
+                    <div className="mt-12">
+                        <AdminSettings />
+                    </div>
                 </div>
             </div>
         </main>
