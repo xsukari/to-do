@@ -29,13 +29,6 @@ const theme = responsiveFontSizes(
             fontFamily: roboto.style.fontFamily,
         },
         components: {
-            MuiButton: {
-                styleOverrides: {
-                    root: {
-                        color: "black"
-                    },
-                },
-            },
             MuiAccordionSummary: {
                 styleOverrides: {
                     root: {
