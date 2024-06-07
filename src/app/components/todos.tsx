@@ -1,52 +1,22 @@
 "use client"
 import React from "react"
 import Typography from "@mui/material/Typography"
-import { styled } from "@mui/material/styles"
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp"
-import MuiAccordion, { AccordionProps } from "@mui/material/Accordion"
-import MuiAccordionSummary, { AccordionSummaryProps } from "@mui/material/AccordionSummary"
-import MuiAccordionDetails from "@mui/material/AccordionDetails"
+import Accordion from "@mui/material/Accordion"
+import AccordionSummary from "@mui/material/AccordionSummary"
+import AccordionDetails from "@mui/material/AccordionDetails"
 import Checkbox from "@mui/material/Checkbox"
 import FormControlLabel from "@mui/material/FormControlLabel"
 import Menu from "@mui/material/Menu"
 import MenuItem from "@mui/material/MenuItem"
 
 import * as data from "../data/example" // For testing
-
 const toDos = data.toDos.sort((a, b) => Date.parse(b.date) - Date.parse(a.date))
 
-const Accordion = styled((props: AccordionProps) => (
-    <MuiAccordion disableGutters elevation={0} square {...props} />
-))(( ) => ({
-    border: "0px",
-    "&:not(:last-child)": {
-        borderBottom: 0,
-    },
-    "&::before": {
-        display: "none",
-    },
-}))
-
-const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-    padding: theme.spacing(2),
-    borderTop: "0px",
-}))
-
-const AccordionSummary = styled((props: AccordionSummaryProps) => (
-    <MuiAccordionSummary
-        expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem", color: "secondary.main" }} />}
-        {...props}
-    />
-))(({ theme }) => ({
-    backgroundColor: "rgba(0, 0, 0, .03)",
-    flexDirection: "row-reverse",
-    "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
-        transform: "rotate(90deg)",
-    },
-    "& .MuiAccordionSummary-content": {
-        marginLeft: theme.spacing(1),
-    },
-}))
+const iconStyle = {
+    fontSize: "0.9rem",
+    color: "white",
+}
 
 function addTodos(tasks: data.Task[], indexDay: number) {
     const elements: JSX.Element[] = []
@@ -59,14 +29,7 @@ function addTodos(tasks: data.Task[], indexDay: number) {
                     data-day={indexDay}
                     data-task={i - 1}
                     control={
-                        <Checkbox
-                            sx={{
-                                color: "secondary.main",
-                                "&.Mui-checked": {
-                                    color: "secondary.main",
-                                },
-                            }}
-                        />
+                        <Checkbox variant="white"/>
                     } 
                     label={task.due + " - " + task.name}
                 />
@@ -121,12 +84,19 @@ export default function Todos() {
     let i = 1
     toDos.forEach(day => {
         elements.push(
-            <Accordion key={"day" + i}
-                expanded={expanded === "panel" + i} onChange={handleChange("panel" + i)}
+            <Accordion
+                key={"day" + i}
+                expanded={expanded === "panel" + i}
+                onChange={handleChange("panel" + i)}
                 slotProps={{ transition: { unmountOnExit: true } }}
-                sx={{ bgcolor: "primary.main", color: "text.primary" }}
+                disableGutters
+                elevation={0}
+                square
             >
-                <AccordionSummary aria-controls={"panel" + i + "d-content"} id={"panel" + i + "d-header"}>
+                <AccordionSummary
+                    aria-controls={"panel" + i + "d-content"} id={"panel" + i + "d-header"}
+                    expandIcon={<ArrowForwardIosSharpIcon sx={iconStyle}/>}
+                >
                     <Typography>{day.date}</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -143,7 +113,7 @@ export default function Todos() {
                                     : undefined
                             }
                         >
-                            <MenuItem onClick={handleClose} sx={{ color: "text.secondary" }}>Edit</MenuItem>
+                            <MenuItem onClick={handleClose}>Edit</MenuItem>
                         </Menu>
                     </div>
                 </AccordionDetails>

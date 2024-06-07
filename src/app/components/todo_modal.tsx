@@ -65,14 +65,6 @@ export const TodoModal = ({ isOpen, handleClose}: Props) => {
                             }
                         }
                         className="w-full"
-                        sx={{
-                            input: {
-                                color: "text.secondary",
-                            },
-                            "&:hover .MuiOutlinedInput-notchedOutline": {
-                                borderColor: "primary.main",
-                            },
-                        }}
                     />
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DateTimePicker
@@ -81,21 +73,13 @@ export const TodoModal = ({ isOpen, handleClose}: Props) => {
                             onChange={(newValue) => setDate(newValue)}
                             format="YYYY-MM-DD HH:mm:ss"
                             className="w-full"
-                            sx={{
-                                input: {
-                                    color: "text.secondary",
-                                },
-                                "&:hover .MuiOutlinedInput-notchedOutline": {
-                                    borderColor: "primary.main",
-                                },
-                                mt: 2,
-                            }}
+                            sx={{ mt: 2 }}
                             ampm={false}
                         />
                     </LocalizationProvider>
                     <FormControlLabel
                         control={
-                            <Checkbox defaultChecked />
+                            <Checkbox variant="teal" defaultChecked />
                         } 
                         label="Additional reminder?"
                         className="w-full my-2"

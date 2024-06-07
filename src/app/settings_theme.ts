@@ -13,38 +13,48 @@ const theme = responsiveFontSizes(
     createTheme({
         palette: {
             primary: {
-                main: "#009688",
+                main: "#ffffff",
             },
             secondary: {
                 main: "#ffffff",
             },
             text: {
                 primary: "#ffffff",
-                secondary: "#000000"
+                secondary: "#ffffff",
             }
         },
         typography: {
             fontFamily: roboto.style.fontFamily,
         },
         components: {
-            MuiPickersDay: {
+            MuiTypography: {
                 styleOverrides: {
                     root: {
-                        backgroundColor: "white",
-                        color: "#009688"
+                        color: "white",
                     },
-                    /*today: {
-
-                    }*/
-                }
+                },
             },
-            MuiMultiSectionDigitalClock: {
+            MuiInputAdornment: {
                 styleOverrides: {
                     root: {
-                        backgroundColor: "white",
-                        color: "#009688"
+                        "& .MuiTypography-root": {
+                            color: "white",
+                        },
                     },
-                }
+                },
+            },
+            MuiTextField: {
+                styleOverrides: {
+                    root: {
+                        "&:hover .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "white",
+                            borderWidth: "2px",
+                        },
+                        "& .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "white",
+                        },
+                    },
+                },
             },
         }
     })

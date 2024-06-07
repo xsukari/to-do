@@ -5,7 +5,7 @@ export default function AdminSettings() {
         <div>
             <div className="w-full flex bg-panel">
                 <div className="w-1/4">
-                    <Typography color="text.primary">TEST</Typography>
+                    <Typography>TEST</Typography>
                 </div>
                 <div className="w-3/4">
 
