@@ -29,7 +29,7 @@ function addTodos(tasks: data.Task[], indexDay: number) {
                     data-day={indexDay}
                     data-task={i - 1}
                     control={
-                        <Checkbox variant="white"/>
+                        <Checkbox />
                     } 
                     label={task.due + " - " + task.name}
                 />
@@ -113,7 +113,7 @@ export default function Todos() {
                                     : undefined
                             }
                         >
-                            <MenuItem onClick={handleClose}>Edit</MenuItem>
+                            <MenuItem variant="black" onClick={handleClose}>Edit</MenuItem>
                         </Menu>
                     </div>
                 </AccordionDetails>

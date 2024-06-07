@@ -54,9 +54,17 @@ const theme = responsiveFontSizes(
             MuiMenuItem: {
                 styleOverrides: {
                     root: {
-                        color: "white"
+                        color: teal,
                     },
                 },
+                variants: [
+                    { 
+                        props: { variant: "black" },
+                        style: {
+                            color: "black",
+                        },
+                    },
+                ],
             },
             MuiAccordion: {
                 styleOverrides: {
@@ -74,16 +82,15 @@ const theme = responsiveFontSizes(
                 },
             },
             MuiCheckbox: {
-                variants: [
-                    {
-                        props: { variant: "white" },
-                        style: {
+                styleOverrides: {
+                    root: {
+                        color: "white",
+                        "&.Mui-checked": {
                             color: "white",
-                            "&.Mui-checked": {
-                                color: "white",
-                            },
                         },
                     },
+                },
+                variants: [
                     { 
                         props: { variant: "teal" }, 
                         style: {
