@@ -9,6 +9,8 @@ const roboto = Roboto({
     display: "swap",
 })
 
+const teal = "#009688"
+
 const theme = responsiveFontSizes(
     createTheme({
         palette: {
@@ -27,6 +29,29 @@ const theme = responsiveFontSizes(
             fontFamily: roboto.style.fontFamily,
         },
         components: {
+            MuiMenuItem: {
+                styleOverrides: {
+                    root: {
+                        color: teal,
+                    },
+                },
+            },
+            MuiSelect: {
+                styleOverrides: {
+                    root: {
+                        "&:hover .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "white",
+                            borderWidth: "2px",
+                        },
+                        "& .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "white",
+                        },
+                    },
+                    icon: {
+                        color: "white",
+                    },
+                },
+            },
             MuiButton: {
                 styleOverrides: {
                     outlined: {
