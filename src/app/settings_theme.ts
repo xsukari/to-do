@@ -27,10 +27,26 @@ const theme = responsiveFontSizes(
             fontFamily: roboto.style.fontFamily,
         },
         components: {
+            MuiButton: {
+                styleOverrides: {
+                    outlined: {
+                        borderColor: "white",
+                        padding: "7px 17px",
+                        "&:hover": {
+                            borderColor: "white",
+                            borderWidth: "2px",
+                            padding: "6px 16px",
+                        },
+                    },
+                },
+            },
             MuiTypography: {
                 styleOverrides: {
                     root: {
                         color: "white",
+                    },
+                    caption: {
+                        fontSize: 10,
                     },
                 },
             },
