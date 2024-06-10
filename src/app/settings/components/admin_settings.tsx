@@ -69,7 +69,7 @@ export default function AdminSettings() {
             <div className="flex items-center py-2">
                 <div className="w-1/3 px-2">
                     <Typography>
-                        Current users
+                        View / remove users
                     </Typography>
                 </div>
                 <div className="w-2/3 flex">
