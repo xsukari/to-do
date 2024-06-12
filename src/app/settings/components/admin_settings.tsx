@@ -7,6 +7,9 @@ import InputLabel from "@mui/material/InputLabel"
 import MenuItem from "@mui/material/MenuItem"
 import FormControl from "@mui/material/FormControl"
 import Select, { SelectChangeEvent } from "@mui/material/Select"
+import useSWR from "swr"
+
+const fetcher = (url: URL | RequestInfo, init?: RequestInit | undefined) => fetch(url, init).then((res) => res.json())
 
 import { users } from "../../data/example" // for testing
 
@@ -31,6 +34,11 @@ export default function AdminSettings() {
     const handleChange = (event: SelectChangeEvent) => {
         setRemoveUser(event.target.value as string)
     }
+
+    const { data, error } = useSWR("/api/test", fetcher)
+
+    if (error) return (<div>Failed to load</div>)
+    if (!data) return (<div>Loading...</div>)
 
     return (
         <div className="w-full bg-panel">
@@ -69,7 +77,7 @@ export default function AdminSettings() {
             <div className="flex items-center py-2">
                 <div className="w-1/3 px-2">
                     <Typography>
-                        Remove user
+                        Remove user + {data.message}
                     </Typography>
                 </div>
                 <div className="w-2/3 flex">
