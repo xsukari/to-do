@@ -1,13 +1,7 @@
 "use client"
-import { Roboto } from "next/font/google"
 import { createTheme, responsiveFontSizes } from "@mui/material/styles"
 import type {} from "@mui/x-date-pickers/themeAugmentation"
-
-const roboto = Roboto({
-    weight: ["300", "400", "500", "700"],
-    subsets: ["latin"],
-    display: "swap",
-})
+import { roboto } from "./data/fonts"
 
 const teal = "#009688"
 
