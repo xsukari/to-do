@@ -36,9 +36,13 @@ export default function AdminSettings() {
     }
 
     const { data, error } = useSWR("/api/test", fetcher)
+    //const { data: dataUpdate, error: errorUpdate } = useSWR("/api/service-update", fetcher)
 
     if (error) return (<div>Failed to load</div>)
     if (!data) return (<div>Loading...</div>)
+
+    //if (errorUpdate) return (<div>Failed to load</div>)
+    //if (!dataUpdate) return (<div>Loading...</div>)
 
     return (
         <div className="w-full bg-panel">
