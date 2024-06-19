@@ -2,7 +2,7 @@ import Navbar from "./components/navbar"
 import UserSettings from "./components/user_settings"
 import AdminSettings from "./components/admin_settings"
 import { ThemeProvider } from "@mui/material/styles"
-import theme from "../themes/settings_theme"
+import theme from "../themes/secondary_theme"
 
 export default function Home() {
     return (
