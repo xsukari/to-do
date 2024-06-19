@@ -37,3 +37,4 @@ next-env.d.ts
 
 /src/app/favicon.ico
 /src/app/icon.ico
+.env
