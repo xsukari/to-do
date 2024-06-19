@@ -12,8 +12,8 @@ export interface UserTable {
     email: string
     password: string
     admin: boolean
-    modified_at: ColumnType<Date, string | undefined>
-    created_at: ColumnType<Date, string | undefined, never>
+    updatedAt: ColumnType<Date, string | undefined>
+    createdAt: ColumnType<Date, string | undefined, never>
 }
 export type User = Selectable<UserTable>
 export type NewUser = Insertable<UserTable>
@@ -21,12 +21,12 @@ export type UserUpdate = Updateable<UserTable>
   
 export interface TaskTable {
     id: Generated<number>
-    user_id: number
+    userId: number
     name: string
-    due_at: ColumnType<Date, string | undefined>
-    additional_reminder: boolean
-    modified_at: ColumnType<Date, string | undefined>
-    created_at: ColumnType<Date, string | undefined, never>
+    dueAt: ColumnType<Date, string | undefined>
+    additionalReminder: boolean
+    updatedAt: ColumnType<Date, string | undefined>
+    createdAt: ColumnType<Date, string | undefined, never>
 }
 export type Task = Selectable<TaskTable>
 export type NewTask = Insertable<TaskTable>
@@ -36,8 +36,8 @@ export interface InviteTable {
     id: Generated<number>
     email: string
     valid: boolean
-    modified_at: ColumnType<Date, string | undefined>
-    created_at: ColumnType<Date, string | undefined, never>
+    updatedAt: ColumnType<Date, string | undefined>
+    createdAt: ColumnType<Date, string | undefined, never>
 }
 export type Invite = Selectable<InviteTable>
 export type NewInvite = Insertable<InviteTable>
