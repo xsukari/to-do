@@ -1,7 +1,7 @@
 "use client"
 import { createTheme, responsiveFontSizes } from "@mui/material/styles"
 import type {} from "@mui/x-date-pickers/themeAugmentation"
-import { roboto } from "../data/fonts"
+import { inter } from "../data/fonts"
 
 const teal = "#009688"
 
@@ -20,7 +20,7 @@ const theme = responsiveFontSizes(
             }
         },
         typography: {
-            fontFamily: roboto.style.fontFamily,
+            fontFamily: inter.style.fontFamily,
         },
         components: {
             MuiMenuItem: {
