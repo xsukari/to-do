@@ -7,8 +7,6 @@ import Link from "next/link"
 import useSWRMutation from "swr/mutation"
 import { Auth } from "../../data/types"
 
-// const fetcher = (url: URL | RequestInfo, init?: RequestInit | undefined) => fetch(url, init).then((res) => res.json())
-
 const fetcher = async (url: string, { arg }: { arg: Auth }) => {
     const response = await fetch(url, {
         method: "POST",
@@ -26,12 +24,11 @@ const fetcher = async (url: string, { arg }: { arg: Auth }) => {
 }
 
 export default function Form() {
-
     const [email, setEmail] = React.useState<string | null>("")
     const [username, setUsername] = React.useState<string | null>("")
     const [password, setPassword] = React.useState<string | null>("")
 
-    const { trigger, isMutating, data, error } = useSWRMutation("/api/register", fetcher)
+    const { trigger/*, isMutating, data, error*/ } = useSWRMutation("/api/register", fetcher)
 
     return (
         <div className="w-full bg-panel lg:w-1/2 2xl:w-1/3 m-auto">
@@ -86,6 +83,9 @@ export default function Form() {
                     <Button
                         variant="outlined" 
                         className="w-full"
+                        onClick={() => {
+                            trigger({ email: email, username: username, password: password } as Auth)
+                        }}
                     >
                         Register
                     </Button>
