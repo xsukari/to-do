@@ -45,9 +45,9 @@ export default function AdminSettings() {
     //if (!dataUpdate) return (<div>Loading...</div>)
 
     return (
-        <div className="w-full bg-panel">
-            <div className="flex flex-col md:flex-row py-2">
-                <div className="md:w-1/3 flex items-center px-2 py-2 md:py-0">
+        <div className="w-full bg-panel 3xl:w-3/4 m-auto">
+            <div className="flex flex-col lg:flex-row py-2">
+                <div className="lg:w-1/3 flex items-center px-2 py-2 lg:py-0">
                     <Typography>
                         Invite user by email address
                     </Typography>
@@ -77,8 +77,8 @@ export default function AdminSettings() {
                 </div>
             </div>
 
-            <div className="flex flex-col md:flex-row py-2">
-                <div className="md:w-1/3 flex items-center px-2 py-2 md:py-0">
+            <div className="flex flex-col lg:flex-row py-2">
+                <div className="lg:w-1/3 flex items-center px-2 py-2 lg:py-0">
                     <Typography>
                         Remove user + {data.message}
                     </Typography>
