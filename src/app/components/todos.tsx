@@ -84,9 +84,8 @@ export default function Todos() {
     let i = 1
     toDos.forEach(day => {
         elements.push(
-            <div className="xl:w-3/4 3xl:w-2/3 4xl:w-1/2 m-auto">
+            <div className="xl:w-3/4 3xl:w-2/3 4xl:w-1/2 m-auto" key={"day" + i}>
                 <Accordion
-                    key={"day" + i}
                     expanded={expanded === "panel" + i}
                     onChange={handleChange("panel" + i)}
                     slotProps={{ transition: { unmountOnExit: true } }}
