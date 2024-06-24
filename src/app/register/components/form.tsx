@@ -25,67 +25,70 @@ const fetcher = async (url: string, { arg }: { arg: Auth }) => {
 }
 
 export default function Form() {
-    const [inviteUser, setInviteUser] = React.useState<string | null>("")
+
+    const [email, setEmail] = React.useState<string | null>("")
+    const [username, setUsername] = React.useState<string | null>("")
+    const [password, setPassword] = React.useState<string | null>("")
 
     const { trigger, isMutating, data, error } = useSWRMutation("/api/register", fetcher)
 
     return (
         <div className="w-full bg-panel">
-            <div className=" py-2">
-                <div className="w-full flex pb-2">
-                    <div className="w-1/3 px-2">
+            <div className="py-2">
+                <div className="flex flex-col md:flex-row pb-2">
+                    <div className="md:w-1/3 px-2 py-2 md:py-0">
                         <Typography>
                             Email
                         </Typography>
                     </div>
-                    <div className="w-2/3 flex px-2">
+                    <div className="flex-grow px-2">
                         <TextField
                             required
-                            value={inviteUser}
+                            value={email}
                             size="small"
                             onChange={
                                 (event: React.ChangeEvent<HTMLInputElement>) => {
-                                    setInviteUser(event.target.value)
+                                    setEmail(event.target.value)
                                 }
                             }
                             className="w-full"
                         />
                     </div>
                 </div>
-                <div className="w-full flex pb-2">
-                    <div className="w-1/3 px-2">
+                <div className="flex flex-col md:flex-row pb-2">
+                    <div className="md:w-1/3 px-2 py-2 md:py-0">
                         <Typography>
                             User name
                         </Typography>
                     </div>
-                    <div className="w-2/3 flex px-2">
+                    <div className="flex-grow px-2">
                         <TextField
                             required
-                            value={inviteUser}
+                            value={username}
                             size="small"
                             onChange={
                                 (event: React.ChangeEvent<HTMLInputElement>) => {
-                                    setInviteUser(event.target.value)
+                                    setUsername(event.target.value)
                                 }
                             }
                             className="w-full"
                         />
                     </div>
                 </div>
-                <div className="w-full flex pb-2">
-                    <div className="w-1/3 px-2">
+                <div className="flex flex-col md:flex-row pb-2">
+                    <div className="md:w-1/3 px-2 py-2 md:py-0">
                         <Typography>
                             Password
                         </Typography>
                     </div>
-                    <div className="w-2/3 flex px-2">
+                    <div className="flex-grow px-2">
                         <TextField
                             required
-                            value={inviteUser}
+                            value={password}
                             size="small"
                             onChange={
                                 (event: React.ChangeEvent<HTMLInputElement>) => {
-                                    setInviteUser(event.target.value)
+                                    setPassword(event.target.value)
                                 }
                             }
                             className="w-full"
