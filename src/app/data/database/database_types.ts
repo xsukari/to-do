@@ -44,7 +44,7 @@ export type NewInvite = Insertable<InviteTable>
 export type InviteUpdate = Updateable<InviteTable>
 
 export interface Database {
-    user: UserTable
-    task: TaskTable
-    invite: InviteTable
+    User: UserTable
+    Task: TaskTable
+    Invite: InviteTable
 }
