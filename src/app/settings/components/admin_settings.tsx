@@ -45,7 +45,7 @@ export default function AdminSettings() {
     //if (!dataUpdate) return (<div>Loading...</div>)
 
     return (
-        <div className="w-full bg-panel 3xl:w-3/4 m-auto">
+        <div className="w-full bg-panel 2xl:w-3/4 3xl:w-2/3 4xl:w-1/2 m-auto">
             <div className="flex flex-col lg:flex-row py-2">
                 <div className="lg:w-1/3 flex items-center px-2 py-2 lg:py-0">
                     <Typography>

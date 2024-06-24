@@ -84,40 +84,42 @@ export default function Todos() {
     let i = 1
     toDos.forEach(day => {
         elements.push(
-            <Accordion
-                key={"day" + i}
-                expanded={expanded === "panel" + i}
-                onChange={handleChange("panel" + i)}
-                slotProps={{ transition: { unmountOnExit: true } }}
-                disableGutters
-                elevation={0}
-                square
-            >
-                <AccordionSummary
-                    aria-controls={"panel" + i + "d-content"} id={"panel" + i + "d-header"}
-                    expandIcon={<ArrowForwardIosSharpIcon sx={iconStyle}/>}
+            <div className="xl:w-3/4 3xl:w-2/3 4xl:w-1/2 m-auto">
+                <Accordion
+                    key={"day" + i}
+                    expanded={expanded === "panel" + i}
+                    onChange={handleChange("panel" + i)}
+                    slotProps={{ transition: { unmountOnExit: true } }}
+                    disableGutters
+                    elevation={0}
+                    square
                 >
-                    <Typography>{day.date}</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                    <div onContextMenu={handleContextMenu} style={{ cursor: "context-menu" }}>
-                        {addTodos(day.tasks, i - 1)}
+                    <AccordionSummary
+                        aria-controls={"panel" + i + "d-content"} id={"panel" + i + "d-header"}
+                        expandIcon={<ArrowForwardIosSharpIcon sx={iconStyle}/>}
+                    >
+                        <Typography>{day.date}</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <div onContextMenu={handleContextMenu} style={{ cursor: "context-menu" }}>
+                            {addTodos(day.tasks, i - 1)}
 
-                        <Menu
-                            open={contextMenu !== null}
-                            onClose={handleClose}
-                            anchorReference="anchorPosition"
-                            anchorPosition={
-                                contextMenu !== null
-                                    ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
-                                    : undefined
-                            }
-                        >
-                            <MenuItem variant="black" onClick={handleClose}>Edit</MenuItem>
-                        </Menu>
-                    </div>
-                </AccordionDetails>
-            </Accordion>
+                            <Menu
+                                open={contextMenu !== null}
+                                onClose={handleClose}
+                                anchorReference="anchorPosition"
+                                anchorPosition={
+                                    contextMenu !== null
+                                        ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
+                                        : undefined
+                                }
+                            >
+                                <MenuItem variant="black" onClick={handleClose}>Edit</MenuItem>
+                            </Menu>
+                        </div>
+                    </AccordionDetails>
+                </Accordion>
+            </div>
         )
 
         i++
