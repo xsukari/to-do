@@ -56,7 +56,6 @@ export const TodoModal = ({ isOpen, handleClose}: Props) => {
             <Fade in={isOpen}>
                 <Box sx={modalStyle}>
                     <TextField
-                        required
                         label="To do"
                         value={task}
                         onChange={

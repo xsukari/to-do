@@ -23,7 +23,6 @@ export default function UserSettings() {
             </div>
             <div className="flex flex-grow px-2">
                 <TextField
-                    required
                     value={remindAfter}
                     size="small"
                     placeholder="15"

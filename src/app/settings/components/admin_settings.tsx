@@ -55,7 +55,6 @@ export default function AdminSettings() {
                 <div className="flex flex-grow">
                     <div className="w-3/4 px-2">
                         <TextField
-                            required
                             value={inviteUser}
                             size="small"
                             placeholder="user@example.com"
