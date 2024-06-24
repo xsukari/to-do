@@ -7,16 +7,21 @@ export default function UserSettings() {
     const [remindAfter, setRemindAfter] = React.useState<string | null>("")
 
     return (
-        <div className="w-full flex bg-panel items-center py-2">
-            <div className="w-1/3 px-2">
-                <Typography>
-                    Additional reminder after
-                </Typography>
-                <Typography variant="caption">
-                    0 or no value disables it
-                </Typography>
+        <div className="w-full bg-panel flex flex-col md:flex-row py-2">
+            <div className="md:w-1/3 px-2 py-2 md:py-0">
+                <div className="flex items-center">
+                    <Typography>
+                        Additional reminder after
+                    </Typography>
+                </div>
+                <div className="flex items-center">
+                    <Typography variant="caption">
+                        0 or no value disables it
+                    </Typography>
+                </div>
+
             </div>
-            <div className="w-2/3 px-2">
+            <div className="flex flex-grow px-2">
                 <TextField
                     required
                     value={remindAfter}

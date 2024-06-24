@@ -46,13 +46,13 @@ export default function AdminSettings() {
 
     return (
         <div className="w-full bg-panel">
-            <div className="flex items-center py-2">
-                <div className="w-1/3 px-2">
+            <div className="flex flex-col md:flex-row py-2">
+                <div className="md:w-1/3 flex items-center px-2 py-2 md:py-0">
                     <Typography>
                         Invite user by email address
                     </Typography>
                 </div>
-                <div className="w-2/3 flex">
+                <div className="flex flex-grow">
                     <div className="w-3/4 px-2">
                         <TextField
                             required
@@ -78,13 +78,13 @@ export default function AdminSettings() {
                 </div>
             </div>
 
-            <div className="flex items-center py-2">
-                <div className="w-1/3 px-2">
+            <div className="flex flex-col md:flex-row py-2">
+                <div className="md:w-1/3 flex items-center px-2 py-2 md:py-0">
                     <Typography>
                         Remove user + {data.message}
                     </Typography>
                 </div>
-                <div className="w-2/3 flex">
+                <div className="flex flex-grow">
                     <div className="w-3/4 px-2">
                         <FormControl fullWidth>
                             <InputLabel id="users-select-label" size="small">User</InputLabel>
