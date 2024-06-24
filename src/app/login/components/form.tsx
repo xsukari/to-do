@@ -1,6 +1,5 @@
 "use client"
 import React from "react"
-import { Typography } from "@mui/material"
 import TextField from "@mui/material/TextField"
 import Button from "@mui/material/Button"
 import useSWRMutation from "swr/mutation"
@@ -31,47 +30,33 @@ export default function Form() {
     const { trigger, isMutating, data, error } = useSWRMutation("/api/login", fetcher)
 
     return (
-        <div className="w-full bg-panel">
+        <div className="w-full bg-panel lg:w-1/2 2xl:w-1/3 m-auto">
             <div className="py-2">
-                <div className="flex flex-col md:flex-row pb-2">
-                    <div className="md:w-1/3 px-2 py-2 md:py-0">
-                        <Typography>
-                            Username
-                        </Typography>
-                    </div>
-                    <div className="flex-grow px-2">
-                        <TextField
-                            required
-                            value={username}
-                            size="small"
-                            onChange={
-                                (event: React.ChangeEvent<HTMLInputElement>) => {
-                                    setUsername(event.target.value)
-                                }
+                <div className="flex-grow px-2 pb-2">
+                    <TextField
+                        label="Username"
+                        value={username}
+                        size="small"
+                        onChange={
+                            (event: React.ChangeEvent<HTMLInputElement>) => {
+                                setUsername(event.target.value)
                             }
-                            className="w-full"
-                        />
-                    </div>
+                        }
+                        className="w-full"
+                    />
                 </div>
-                <div className="flex flex-col md:flex-row pb-2">
-                    <div className="md:w-1/3 px-2 py-2 md:py-0">
-                        <Typography>
-                            Password
-                        </Typography>
-                    </div>
-                    <div className="flex-grow px-2">
-                        <TextField
-                            required
-                            value={password}
-                            size="small"
-                            onChange={
-                                (event: React.ChangeEvent<HTMLInputElement>) => {
-                                    setPassword(event.target.value)
-                                }
+                <div className="flex-grow px-2 pb-2">
+                    <TextField
+                        label="Password"
+                        value={password}
+                        size="small"
+                        onChange={
+                            (event: React.ChangeEvent<HTMLInputElement>) => {
+                                setPassword(event.target.value)
                             }
-                            className="w-full"
-                        />
-                    </div>
+                        }
+                        className="w-full"
+                    />
                 </div>
                 <div className="w-1/4 px-2 m-auto">
                     <Button
