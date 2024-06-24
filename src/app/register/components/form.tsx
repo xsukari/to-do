@@ -2,6 +2,8 @@
 import React from "react"
 import TextField from "@mui/material/TextField"
 import Button from "@mui/material/Button"
+import { Typography } from "@mui/material"
+import Link from "next/link"
 import useSWRMutation from "swr/mutation"
 import { Auth } from "../../data/types"
 
@@ -11,7 +13,7 @@ const fetcher = async (url: string, { arg }: { arg: Auth }) => {
     const response = await fetch(url, {
         method: "POST",
         headers: {
-            "Content-Type": "application/json", // or the appropriate content type for your API
+            "Content-Type": "application/json",
         },
         body: JSON.stringify(arg),
     })
@@ -72,6 +74,13 @@ export default function Form() {
                         }
                         className="w-full"
                     />
+                </div>
+                <div className="px-2 pb-2">
+                    <Link href="/login">
+                        <Typography variant="caption">
+                                Already have an account?
+                        </Typography>
+                    </Link>
                 </div>
                 <div className="w-1/4 px-2 m-auto">
                     <Button
