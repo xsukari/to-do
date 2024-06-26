@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from "next/server"
 
 async function usersExist() {
-    const response = await fetch("http://localhost:3000/api/users-exist") // TODO change to generic
+    const response = await fetch("http://localhost:" + process.env.PORT + "/api/users-exist")
     const data = await response.json()
 
     return data.message === "true"
