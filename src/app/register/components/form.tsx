@@ -27,8 +27,20 @@ export default function Form() {
     const [email, setEmail] = React.useState<string | null>("")
     const [username, setUsername] = React.useState<string | null>("")
     const [password, setPassword] = React.useState<string | null>("")
+    const [passwordConfirmation, setPasswordConfirmation] = React.useState<string | null>("")
 
-    const { trigger/*, isMutating, data, error*/ } = useSWRMutation("/api/register", fetcher)
+    const { trigger, isMutating/*, data, error */} = useSWRMutation("/api/register", fetcher)
+
+    const handleSubmit = async () => {
+        const response = await trigger({ 
+            email: email,
+            username: username,
+            password: password,
+            passwordConfirmation: passwordConfirmation 
+        } as Auth)
+        
+        console.log(response.message)
+    }
 
     return (
         <div className="w-full bg-panel lg:w-1/2 2xl:w-1/3 m-auto">
@@ -64,9 +76,24 @@ export default function Form() {
                         label="Password"
                         value={password}
                         size="small"
+                        type="password"
                         onChange={
                             (event: React.ChangeEvent<HTMLInputElement>) => {
                                 setPassword(event.target.value)
+                            }
+                        }
+                        className="w-full"
+                    />
+                </div>
+                <div className="flex-grow px-2 pb-2">
+                    <TextField
+                        label="Repeat password"
+                        value={passwordConfirmation}
+                        size="small"
+                        type="password"
+                        onChange={
+                            (event: React.ChangeEvent<HTMLInputElement>) => {
+                                setPasswordConfirmation(event.target.value)
                             }
                         }
                         className="w-full"
@@ -83,8 +110,9 @@ export default function Form() {
                     <Button
                         variant="outlined" 
                         className="w-full"
+                        disabled={isMutating}
                         onClick={() => {
-                            trigger({ email: email, username: username, password: password } as Auth)
+                            handleSubmit()
                         }}
                     >
                         Register
