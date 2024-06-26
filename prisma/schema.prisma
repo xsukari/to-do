@@ -4,12 +4,12 @@ generator client {
 
 datasource db {
     provider = "postgresql"
-    url      = env("DATABASE_URL")
+    url = env("DATABASE_URL")
 }
 
 model User {
     id Int @id @default(autoincrement())
-    name String
+    username String
     email String @unique
     password String
     admin Boolean @default(false)
@@ -33,6 +33,7 @@ model Invite {
     id Int @id @default(autoincrement())
     email String @unique
     valid Boolean
+    registered Boolean @default(false)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 }

@@ -8,7 +8,7 @@ import {
 
 export interface UserTable {
     id: Generated<number>
-    name: string
+    username: string
     email: string
     password: string
     admin: boolean
@@ -36,6 +36,7 @@ export interface InviteTable {
     id: Generated<number>
     email: string
     valid: boolean
+    registered: boolean
     updatedAt: ColumnType<Date, string | undefined>
     createdAt: ColumnType<Date, string | undefined, never>
 }
