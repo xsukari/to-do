@@ -14,4 +14,4 @@ Which means, the code will still very likely heavily change when you are reading
 ## Getting Started
 1. Install dependencies with "pnpm install".
 2. Run the development server with "pnpm dev".
-3. Open [http://localhost:3000](http://localhost:3000) with your browser.
+3. Open [http://localhost:8010](http://localhost:8010) with your browser.
