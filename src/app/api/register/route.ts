@@ -47,17 +47,17 @@ async function validate(auth: Auth) {
 }
 
 export async function POST(request: Request) {
-    const data = {
-        message: ""
-    }
+
+    let text = ""
+    let success = false
 
     const auth = await request.json() as Auth
     const validatedAuth = await validate(auth)
 
     if (!validatedAuth) {
-        data.message = "Invalid credentials, please check your email / password."
+        text = "Invalid credentials, please check your email / password."
 
-        return Response.json(data)
+        return Response.json({ message: { success: success, text: text } })
     }
 
     /**
@@ -82,12 +82,13 @@ export async function POST(request: Request) {
                 true
             )
 
-            data.message = "Registration successful."
+            text = "Registration successful."
+            success = true
         } catch (error) {
-            data.message = "Registration unsuccessful."
+            text = "Registration unsuccessful. Please try again."
         }
 
-        return Response.json(data)
+        return Response.json({ message: { success: success, text: text } })
     } else {
         const isInvitedAndValid = await invitedAndValid(validatedAuth.email)
         const isUsernameNotTaken = !await usernameTaken(validatedAuth.username)
@@ -101,14 +102,15 @@ export async function POST(request: Request) {
                     false
                 )
 
-                data.message = "Registration successful."
+                text = "Registration successful."
+                success = true
             } catch (error) {
-                data.message = "Registration unsuccessful."
+                text = "Registration unsuccessful. Please try again."
             }
         } else {
-            data.message = "You are not invited or your username is already taken."
+            text = "You are not invited or your username is already taken."
         }
 
-        return Response.json(data)
+        return Response.json({ message: { success: success, text: text } })
     }
 }
