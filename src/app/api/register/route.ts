@@ -2,9 +2,8 @@ import { Auth } from "../../data/types"
 import { 
     usersExist,
     invitedAndValid,
-    newUser,
+    newUserAndUpdateInvite,
     usernameTaken, 
-    updateInvitation,
     removeUser,
 } from "../../data/database/functions"
 import vine, { errors } from "@vinejs/vine"
@@ -94,34 +93,17 @@ export async function POST(request: Request) {
         const isUsernameNotTaken = !await usernameTaken(validatedAuth.username)
 
         if (isInvitedAndValid && isUsernameNotTaken) {
-            let userCreationFailed = false
-
             try {
-                await newUser(
+                await newUserAndUpdateInvite(
                     validatedAuth.username,
                     validatedAuth.email,
                     hashedPassword,
                     false
                 )
+
+                data.message = "Registration successful."
             } catch (error) {
-                userCreationFailed = true
-            }
-
-            if (!userCreationFailed) {
-                try {
-                    await updateInvitation(validatedAuth.email)
-
-                    data.message = "Registration successful."
-                } catch (error) {
-                    try {
-                        await removeUser(validatedAuth.username, validatedAuth.email)
-                        
-                        data.message = "Registration unsuccessful."
-                    } catch (error) {
-                        // Add sending of mails to admins here
-                        data.message = "Error. Contact your administrator."
-                    }
-                }
+                data.message = "Registration unsuccessful."
             }
         } else {
             data.message = "You are not invited or your username is already taken."

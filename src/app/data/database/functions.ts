@@ -26,7 +26,7 @@ export async function invitedAndValid(email: string) {
     return dbData ? true : false
 }
 
-export async function newUser(username: string, email: string, hashedPassword: string, admin: boolean) {
+export async function newUserAndUpdateInvite(username: string, email: string, hashedPassword: string, admin: boolean) {
     const user: NewUser = {
         username: username,
         email: email,
@@ -35,9 +35,22 @@ export async function newUser(username: string, email: string, hashedPassword: s
         updatedAt: new Date().toISOString(),
     }
 
-    const query = db.insertInto("User").values(user)
+    const invite: InviteUpdate = {
+        valid: false,
+        registered: true,
+        updatedAt: new Date(),
+    }
 
-    await query.executeTakeFirst()
+    await db.transaction().execute(async (trx) => {
+        trx.insertInto("User")
+            .values(user)
+            .executeTakeFirst()
+
+        trx.updateTable("Invite")
+            .set(invite)
+            .where("email", "=", email)
+            .executeTakeFirst()
+    })
 }
 
 export async function usernameTaken(username: string) {
@@ -49,21 +62,6 @@ export async function usernameTaken(username: string) {
     const dbData = await query.executeTakeFirst()
 
     return dbData ? true : false
-}
-
-export async function updateInvitation(email: string) {
-    const invite: InviteUpdate = {
-        valid: false,
-        registered: true,
-        updatedAt: new Date(),
-    }
-
-    const query = 
-        db.updateTable("Invite")
-            .set(invite)
-            .where("email", "=", email)
-
-    await query.executeTakeFirst()
 }
 
 export async function removeUser(username: string, email: string) {
