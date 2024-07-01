@@ -64,6 +64,20 @@ export async function usernameTaken(username: string) {
     return dbData ? true : false
 }
 
+export async function newUser(username: string, email: string, hashedPassword: string, admin: boolean) {
+    const user: NewUser = {
+        username: username,
+        email: email,
+        password: hashedPassword,
+        admin: admin,
+        updatedAt: new Date().toISOString(),
+    }
+
+    const query = db.insertInto("User").values(user)
+
+    await query.executeTakeFirst()
+}
+
 export async function removeUser(username: string, email: string) {
     const query = 
         db.deleteFrom("User")

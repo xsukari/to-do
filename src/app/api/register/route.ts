@@ -3,8 +3,8 @@ import {
     usersExist,
     invitedAndValid,
     newUserAndUpdateInvite,
-    usernameTaken, 
-    removeUser,
+    usernameTaken,
+    newUser,
 } from "../../data/database/functions"
 import vine, { errors } from "@vinejs/vine"
 import bcrypt from "bcrypt"
