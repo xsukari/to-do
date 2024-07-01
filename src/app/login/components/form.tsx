@@ -24,10 +24,16 @@ const fetcher = async (url: string, { arg }: { arg: Auth }) => {
 }
 
 export default function Form() {
-    const [username, setUsername] = React.useState<string | null>("")
-    const [password, setPassword] = React.useState<string | null>("")
+    const [username, setUsername] = React.useState<string>("")
+    const [password, setPassword] = React.useState<string>("")
 
-    const { trigger/*, isMutating, data, error*/ } = useSWRMutation("/api/login", fetcher)
+    const { trigger, isMutating/*, data, error*/ } = useSWRMutation("/api/login", fetcher)
+
+    const handleSubmit = async () => {
+        const response = await trigger({ username: username, password: password } as Auth)
+        
+        console.log(response.message)
+    }
 
     return (
         <div className="w-full bg-panel lg:w-1/2 2xl:w-1/3 m-auto">

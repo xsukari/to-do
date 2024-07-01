@@ -28,8 +28,8 @@ function addUsers() {
 }
 
 export default function AdminSettings() {
-    const [inviteUser, setInviteUser] = React.useState<string | null>("")
-    const [removeUser, setRemoveUser] = React.useState("")
+    const [inviteUser, setInviteUser] = React.useState<string>("")
+    const [removeUser, setRemoveUser] = React.useState<string>("")
 
     const handleChange = (event: SelectChangeEvent) => {
         setRemoveUser(event.target.value as string)
