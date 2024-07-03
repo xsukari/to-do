@@ -1,4 +1,4 @@
-import { Auth } from "../../data/types"
+import { Credentials } from "../../data/types"
 import { 
     usersExist,
     invitedAndValid,
@@ -6,56 +6,85 @@ import {
     usernameTaken,
     newUser,
 } from "../../data/database/functions"
-import vine, { errors } from "@vinejs/vine"
+import validator from "validator"
 import bcrypt from "bcrypt"
 
-async function validate(auth: Auth) {
-    const schema = vine.object({
-        username: vine.string(),
-        email: vine.string().email(),
-        password: vine
-            .string()
-            .minLength(8)
-            .maxLength(32)
-            .confirmed()
-    })
-
-    const data = {
-        username: auth.username,
-        email: auth.email,
-        password: auth.password,
-        password_confirmation: auth.passwordConfirmation,
+async function validate(creds: Credentials) {
+    const validatedCreds = {
+        valid: false,
+        message: "",
+        email: "",
+        username: "",
+        password: "",
     }
 
-    try {
-        const output = await vine.validate({ schema, data })
+    const isEmailValid = validator.isEmail(creds.email as string)
+    if (!isEmailValid) {
+        validatedCreds.message = "Please check if your email is valid."
+    }
 
-        const validatedData = {
-            email: output.email,
-            username: output.username,
-            password: output.password,
-        }
+    const isUsernameValid = validator.isLength(creds.username, { min: 3, max: 20 }) // maybe add more validations here, such as isAscii()
+    if (!isUsernameValid) {
+        validatedCreds.message = "Please check if your username is at least 3 characters and at most 20 characters long."
+    }
 
-        return validatedData
-    } catch (error) {
-        if (error instanceof errors.E_VALIDATION_ERROR) {
-            console.log(error.messages)
-        }
+    const isPasswordConfirmed = validator.equals(creds.password, creds.passwordConfirmation as string)
+    if (!isPasswordConfirmed) {
+        validatedCreds.message = "Please make sure you entered your password correctly in both fields."
+    }
 
-        return null
+    const isPasswordStrong = validator.isStrongPassword(creds.password)
+    if (!isPasswordStrong) {
+        validatedCreds.message = 
+            "Please make sure your password is at least 8 characters long and"
+            + " "
+            + "contains at least 1 of all of the following: lowercase letter, uppercase letter, number, symbol."
+    }
+
+    // Check message after all validations
+    if (validatedCreds.message !== "") {
+        return validatedCreds
+    }
+
+    const normalizationOptions: validator.NormalizeEmailOptions = {
+        all_lowercase: true,
+        gmail_convert_googlemaildotcom: true,
+
+        gmail_lowercase: false,
+        gmail_remove_dots: false,
+        gmail_remove_subaddress: false,
+        outlookdotcom_lowercase: false,
+        outlookdotcom_remove_subaddress: false,
+        yahoo_lowercase: false,
+        yahoo_remove_subaddress: false,
+        icloud_lowercase: false,
+        icloud_remove_subaddress: false,
+    }
+
+    const email = validator.normalizeEmail(creds.email as string, normalizationOptions)
+    if (email) {
+        validatedCreds.valid = true
+        validatedCreds.email = email
+        validatedCreds.username = creds.username
+        validatedCreds.password = creds.password
+
+        return validatedCreds
+    } else {
+        validatedCreds.message = "Your email could not be processed. Please inform your administrator."
+
+        return validatedCreds
     }
 }
 
 export async function POST(request: Request) {
-
     let text = ""
     let success = false
 
-    const auth = await request.json() as Auth
-    const validatedAuth = await validate(auth)
+    const creds = await request.json() as Credentials
+    const validatedCreds = await validate(creds)
 
-    if (!validatedAuth) {
-        text = "Invalid credentials, please check your email / password."
+    if (!validatedCreds.valid) {
+        text = validatedCreds.message
 
         return Response.json({ message: { success: success, text: text } })
     }
@@ -69,15 +98,15 @@ export async function POST(request: Request) {
      * using 7800X3D
      */
     // const start = new Date().getTime()
-    const hashedPassword = await bcrypt.hash(validatedAuth.password, 13) 
+    const hashedPassword = await bcrypt.hash(validatedCreds.password, 13) 
     // const end = new Date().getTime()
     // console.log("\n" + (end - start) + " milliseconds\n")
 
     if (!await usersExist()) {
         try {
             await newUser(
-                validatedAuth.username,
-                validatedAuth.email,
+                validatedCreds.username,
+                validatedCreds.email,
                 hashedPassword,
                 true
             )
@@ -90,14 +119,14 @@ export async function POST(request: Request) {
 
         return Response.json({ message: { success: success, text: text } })
     } else {
-        const isInvitedAndValid = await invitedAndValid(validatedAuth.email)
-        const isUsernameNotTaken = !await usernameTaken(validatedAuth.username)
+        const isInvitedAndValid = await invitedAndValid(validatedCreds.email)
+        const isUsernameNotTaken = !await usernameTaken(validatedCreds.username)
 
         if (isInvitedAndValid && isUsernameNotTaken) {
             try {
                 await newUserAndUpdateInvite(
-                    validatedAuth.username,
-                    validatedAuth.email,
+                    validatedCreds.username,
+                    validatedCreds.email,
                     hashedPassword,
                     false
                 )

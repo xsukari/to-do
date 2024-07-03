@@ -5,11 +5,11 @@ import Button from "@mui/material/Button"
 import { Typography } from "@mui/material"
 import Link from "next/link"
 import useSWRMutation from "swr/mutation"
-import { Auth } from "../../data/types"
+import { Credentials } from "../../data/types"
 import Alert from "@mui/material/Alert"
 import { useRouter } from "next/navigation"
 
-const fetcher = async (url: string, { arg }: { arg: Auth }) => {
+const fetcher = async (url: string, { arg }: { arg: Credentials }) => {
     const response = await fetch(url, {
         method: "POST",
         headers: {
@@ -45,7 +45,6 @@ export default function Form() {
                 setMessage("")
             }
         }, 3000)
-
     }, [success, message, router])
 
     const handleSubmit = async () => {
@@ -54,7 +53,7 @@ export default function Form() {
             username: username,
             password: password,
             passwordConfirmation: passwordConfirmation 
-        } as Auth)
+        } as Credentials)
 
         setSuccess(response.message.success)
         setMessage(response.message.text)

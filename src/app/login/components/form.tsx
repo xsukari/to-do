@@ -5,9 +5,9 @@ import Button from "@mui/material/Button"
 import { Typography } from "@mui/material"
 import Link from "next/link"
 import useSWRMutation from "swr/mutation"
-import { Auth } from "../../data/types"
+import { Credentials } from "../../data/types"
 
-const fetcher = async (url: string, { arg }: { arg: Auth }) => {
+const fetcher = async (url: string, { arg }: { arg: Credentials }) => {
     const response = await fetch(url, {
         method: "POST",
         headers: {
@@ -30,7 +30,7 @@ export default function Form() {
     const { trigger, isMutating/*, data, error*/ } = useSWRMutation("/api/login", fetcher)
 
     const handleSubmit = async () => {
-        const response = await trigger({ username: username, password: password } as Auth)
+        const response = await trigger({ username: username, password: password } as Credentials)
         
         console.log(response.message)
     }
@@ -76,7 +76,7 @@ export default function Form() {
                         variant="outlined" 
                         className="w-full"
                         onClick={() => {
-                            trigger({ username: username, password: password } as Auth)
+                            trigger({ username: username, password: password } as Credentials)
                         }}
                     >
                         Login
