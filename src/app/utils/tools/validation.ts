@@ -1,4 +1,4 @@
-import { Credentials } from "../types"
+import { Credentials } from "../definitions/types"
 import validator from "validator"
 
 export async function validateRegistration(creds: Credentials) {

@@ -1,7 +1,7 @@
 "use client"
 import { createTheme, responsiveFontSizes } from "@mui/material/styles"
 import type {} from "@mui/x-date-pickers/themeAugmentation"
-import { inter } from "../utils/fonts"
+import { inter } from "../utils/definitions/fonts"
 
 const teal = "#009688"
 

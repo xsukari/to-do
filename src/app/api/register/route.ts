@@ -1,4 +1,4 @@
-import { Credentials } from "../../utils/types"
+import { Credentials } from "../../utils/definitions/types"
 import { 
     usersExist,
     invitedAndValid,
@@ -7,7 +7,7 @@ import {
     newUser,
 } from "../../utils/database/functions"
 import bcrypt from "bcrypt"
-import { validateRegistration } from "../../utils/functions/validation"
+import { validateRegistration } from "../../utils/tools/validation"
 
 export async function POST(request: Request) {
     let text = ""
