@@ -5,7 +5,7 @@ import Button from "@mui/material/Button"
 import { Typography } from "@mui/material"
 import Link from "next/link"
 import useSWRMutation from "swr/mutation"
-import { Credentials } from "../../data/types"
+import { Credentials } from "../../utils/types"
 import Alert from "@mui/material/Alert"
 import { useRouter } from "next/navigation"
 

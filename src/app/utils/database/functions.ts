@@ -1,5 +1,5 @@
-import { db } from "../../data/database/database"
-import { NewUser, InviteUpdate } from "../../data/database/database_types"
+import { db } from "./database"
+import { NewUser, InviteUpdate } from "./database_types"
 
 export async function usersExist() {
     const query = 

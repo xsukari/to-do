@@ -11,7 +11,7 @@ import useSWR from "swr"
 
 const fetcher = (url: URL | RequestInfo, init?: RequestInit | undefined) => fetch(url, init).then((res) => res.json())
 
-import { users } from "../../data/example" // for testing
+import { users } from "../../utils/example" // for testing
 
 function addUsers() {
     const elements: JSX.Element[] = []

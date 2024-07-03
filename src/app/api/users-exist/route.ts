@@ -1,4 +1,4 @@
-import { db } from "../../data/database/database"
+import { db } from "../../utils/database/database"
 
 export async function GET() {
     const query = db.selectFrom("User").select("id").limit(1)
