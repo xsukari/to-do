@@ -6,8 +6,8 @@ import {
     usernameTaken,
     newUser,
 } from "../../utils/database/functions"
-import bcrypt from "bcrypt"
 import { validateRegistration } from "../../utils/tools/validation"
+import { hashPassword } from "../../utils/tools/hashing"
 
 export async function POST(request: Request) {
     let text = ""
@@ -22,18 +22,7 @@ export async function POST(request: Request) {
         return Response.json({ message: { success: success, text: text } })
     }
 
-    /**
-     * amount of bcrypt salt rounds:
-     * aim for a computation time of ~ 250 ms
-     * 
-     * 13 rounds are ~ 300 ms
-     * 12 rounds are ~ 150 ms
-     * using 7800X3D
-     */
-    // const start = new Date().getTime()
-    const hashedPassword = await bcrypt.hash(validatedCreds.password, 13) 
-    // const end = new Date().getTime()
-    // console.log("\n" + (end - start) + " milliseconds\n")
+    const hashedPassword = await hashPassword(validatedCreds.password)
 
     if (!await usersExist()) {
         try {
