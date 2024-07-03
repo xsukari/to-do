@@ -111,7 +111,7 @@ export async function POST(request: Request) {
                 true
             )
 
-            text = "Registration successful."
+            text = "Registration successful. Redirecting to login shortly..."
             success = true
         } catch (error) {
             text = "Registration unsuccessful. Please try again."
@@ -131,7 +131,7 @@ export async function POST(request: Request) {
                     false
                 )
 
-                text = "Registration successful."
+                text = "Registration successful. Redirecting to login shortly..."
                 success = true
             } catch (error) {
                 text = "Registration unsuccessful. Please try again."
