@@ -37,16 +37,6 @@ export default function Form() {
     const [message, setMessage] = React.useState<string>("")
     const [success, setSuccess] = React.useState<boolean>(false)
 
-    React.useEffect(() => {
-        setTimeout(() => {
-            if (success) {
-                router.push("/login")
-            } else {
-                setMessage("")
-            }
-        }, 3000)
-    }, [success, message, router])
-
     const handleSubmit = async () => {
         const response = await trigger({ 
             email: email,
@@ -57,6 +47,16 @@ export default function Form() {
 
         setSuccess(response.message.success)
         setMessage(response.message.text)
+
+        if (response.message.success) {
+            setTimeout(() => {
+                router.push("/login")
+            }, 5000)
+        }
+
+        setTimeout(() => {
+            setMessage("")
+        }, 10000)
     }
 
     return (
