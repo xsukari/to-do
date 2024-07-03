@@ -1,4 +1,4 @@
-import { Credentials } from "../../utils/definitions/types"
+import { RegistrationCredentials } from "../../utils/definitions/types"
 import { 
     usersExist,
     invitedAndValid,
@@ -13,7 +13,7 @@ export async function POST(request: Request) {
     let text = ""
     let success = false
 
-    const creds = await request.json() as Credentials
+    const creds = await request.json() as RegistrationCredentials
     const validatedCreds = await validateRegistration(creds)
 
     if (!validatedCreds.valid) {

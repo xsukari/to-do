@@ -1,7 +1,7 @@
-import { Credentials } from "../definitions/types"
+import { RegistrationCredentials } from "../definitions/types"
 import validator from "validator"
 
-export async function validateRegistration(creds: Credentials) {
+export async function validateRegistration(creds: RegistrationCredentials) {
     const validatedCreds = {
         valid: false,
         message: "",
@@ -10,7 +10,7 @@ export async function validateRegistration(creds: Credentials) {
         password: "",
     }
 
-    const isEmailValid = validator.isEmail(creds.email as string)
+    const isEmailValid = validator.isEmail(creds.email)
     if (!isEmailValid) {
         validatedCreds.message = "Please check if your email is valid."
     }
@@ -20,7 +20,7 @@ export async function validateRegistration(creds: Credentials) {
         validatedCreds.message = "Please check if your username is at least 3 characters and at most 20 characters long."
     }
 
-    const isPasswordConfirmed = validator.equals(creds.password, creds.passwordConfirmation as string)
+    const isPasswordConfirmed = validator.equals(creds.password, creds.passwordConfirmation)
     if (!isPasswordConfirmed) {
         validatedCreds.message = "Please make sure you entered your password correctly in both fields."
     }
@@ -53,7 +53,7 @@ export async function validateRegistration(creds: Credentials) {
         icloud_remove_subaddress: false,
     }
 
-    const email = validator.normalizeEmail(creds.email as string, normalizationOptions)
+    const email = validator.normalizeEmail(creds.email, normalizationOptions)
     if (email) {
         validatedCreds.valid = true
         validatedCreds.email = email
