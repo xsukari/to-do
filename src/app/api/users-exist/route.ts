@@ -1,13 +1,5 @@
-import { db } from "../../utils/database/database"
+import { usersExist } from "../../utils/database/functions"
 
 export async function GET() {
-    const query = db.selectFrom("User").select("id").limit(1)
-
-    const dbData = await query.executeTakeFirst()
-
-    const data = {
-        message: dbData ? "true" : "false"
-    }
-
-    return Response.json(data)
+    return Response.json({ message: await usersExist() ? true : false })
 }
