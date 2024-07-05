@@ -7,7 +7,7 @@ import {
     newUser,
 } from "../../utils/database/functions"
 import { validateRegistration } from "../../utils/tools/validation"
-import { hashPassword } from "../../utils/tools/hashing"
+import { hashPassword } from "../../utils/tools/crypto"
 
 export async function POST(request: Request) {
     let text = ""
@@ -18,7 +18,6 @@ export async function POST(request: Request) {
 
     if (!validatedCreds.valid) {
         text = validatedCreds.message
-
         return Response.json({ message: { success: success, text: text } })
     }
 
@@ -44,24 +43,25 @@ export async function POST(request: Request) {
         const isInvitedAndValid = await invitedAndValid(validatedCreds.email)
         const isUsernameNotTaken = !await usernameTaken(validatedCreds.username)
 
-        if (isInvitedAndValid && isUsernameNotTaken) {
-            try {
-                await newUserAndUpdateInvite(
-                    validatedCreds.username,
-                    validatedCreds.email,
-                    hashedPassword,
-                    false
-                )
-
-                text = "Registration successful. Redirecting to login shortly..."
-                success = true
-            } catch (error) {
-                text = "Registration unsuccessful. Please try again."
-            }
-        } else {
+        if (!(isInvitedAndValid && isUsernameNotTaken)) {
             text = "You are not invited or your username is already taken."
+            return Response.json({ message: { success: success, text: text } })
         }
 
+        try {
+            await newUserAndUpdateInvite(
+                validatedCreds.username,
+                validatedCreds.email,
+                hashedPassword,
+                false
+            )
+
+            text = "Registration successful. Redirecting to login shortly..."
+            success = true
+        } catch (error) {
+            text = "Registration unsuccessful. Please try again."
+        }
+        
         return Response.json({ message: { success: success, text: text } })
     }
 }
