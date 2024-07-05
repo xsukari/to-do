@@ -52,11 +52,11 @@ export default function Form() {
             setTimeout(() => {
                 router.push("/login")
             }, 5000)
+        } else {
+            setTimeout(() => {
+                setMessage("")
+            }, 10000)
         }
-
-        setTimeout(() => {
-            setMessage("")
-        }, 10000)
     }
 
     return (

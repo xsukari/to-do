@@ -48,11 +48,11 @@ export default function Form() {
             setTimeout(() => {
                 router.push("/")
             }, 5000)
+        } else {
+            setTimeout(() => {
+                setMessage("")
+            }, 10000)
         }
-
-        setTimeout(() => {
-            setMessage("")
-        }, 10000)
     }
 
     return (
@@ -80,6 +80,7 @@ export default function Form() {
                             label="Password"
                             value={password}
                             size="small"
+                            type="password"
                             onChange={
                                 (event: React.ChangeEvent<HTMLInputElement>) => {
                                     setPassword(event.target.value)
