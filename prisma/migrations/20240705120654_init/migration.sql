@@ -36,6 +36,17 @@ CREATE TABLE "Invite" (
     CONSTRAINT "Invite_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "Session" (
+    "id" SERIAL NOT NULL,
+    "userId" INTEGER NOT NULL,
+    "key" TEXT NOT NULL,
+    "expiresAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Session_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
@@ -45,5 +56,11 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 -- CreateIndex
 CREATE UNIQUE INDEX "Invite_email_key" ON "Invite"("email");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "Session_key_key" ON "Session"("key");
+
 -- AddForeignKey
 ALTER TABLE "Task" ADD CONSTRAINT "Task_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
