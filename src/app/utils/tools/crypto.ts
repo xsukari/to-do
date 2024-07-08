@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt"
-import { generateKeyPair } from "node:crypto"
+import { hash, randomUUID } from "node:crypto"
 
 export async function hashPassword(password: string) {
     /**
@@ -22,33 +22,8 @@ export async function comparePasswords(password: string, passwordHash: string) {
     return await bcrypt.compare(password, passwordHash)
 }
 
-export async function generateKeys() {
-    let error = false
-    const keys = {
-        publicKey: "",
-        privateKey: "",
-    }
+export async function generateSessionKey(data: string) {
+    const id = randomUUID({ disableEntropyCache: true })
 
-    generateKeyPair("rsa", {
-        modulusLength: 4096,
-        publicKeyEncoding: {
-            type: "spki",
-            format: "pem",
-        },
-        privateKeyEncoding: {
-            type: "pkcs8",
-            format: "pem",
-            cipher: "aes-256-cbc",
-            passphrase: "top secret",
-        },
-    }, (err, publicKey, privateKey) => {
-        if (!err) {
-            keys.publicKey = publicKey
-            keys.privateKey = privateKey
-        } else {
-            error = true
-        }
-    })
-
-    return error ? null : keys
+    return hash("sha3-512", id + ":" + data)
 }
