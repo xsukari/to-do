@@ -51,7 +51,7 @@ export default function Form() {
         if (response.message.success) {
             setTimeout(() => {
                 router.push("/login")
-            }, 5000)
+            }, 4000)
         } else {
             setTimeout(() => {
                 setMessage("")
