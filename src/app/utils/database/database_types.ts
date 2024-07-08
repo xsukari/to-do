@@ -12,8 +12,8 @@ export interface UserTable {
     email: string
     password: string
     admin: boolean
-    updatedAt: ColumnType<Date, string>
-    createdAt: ColumnType<Date, string | undefined, never>
+    updated_at: ColumnType<Date>
+    created_at: ColumnType<Date, never, never>
 }
 export type User = Selectable<UserTable>
 export type NewUser = Insertable<UserTable>
@@ -21,12 +21,12 @@ export type UserUpdate = Updateable<UserTable>
   
 export interface TaskTable {
     id: Generated<number>
-    userId: number
+    user_id: number
     name: string
-    dueAt: ColumnType<Date, string>
-    additionalReminder: boolean
-    updatedAt: ColumnType<Date, string>
-    createdAt: ColumnType<Date, string | undefined, never>
+    due_at: ColumnType<Date>
+    additional_reminder: boolean
+    updated_at: ColumnType<Date>
+    created_at: ColumnType<Date, never, never>
 }
 export type Task = Selectable<TaskTable>
 export type NewTask = Insertable<TaskTable>
@@ -37,8 +37,8 @@ export interface InviteTable {
     email: string
     valid: boolean
     registered: boolean
-    updatedAt: ColumnType<Date, string>
-    createdAt: ColumnType<Date, string | undefined, never>
+    updated_at: ColumnType<Date>
+    created_at: ColumnType<Date, never, never>
 }
 export type Invite = Selectable<InviteTable>
 export type NewInvite = Insertable<InviteTable>
@@ -46,18 +46,19 @@ export type InviteUpdate = Updateable<InviteTable>
 
 export interface SessionTable {
     id: Generated<number>
-    userId: number
+    user_id: number
     key: string
-    expiresAt: ColumnType<Date, string>
-    createdAt: ColumnType<Date, string | undefined, never>
+    user_agent: string
+    expires_at: ColumnType<Date>
+    created_at: ColumnType<Date, never, never>
 }
 export type Session = Selectable<SessionTable>
 export type NewSession = Insertable<SessionTable>
 export type SessionUpdate = Updateable<SessionTable>
 
 export interface Database {
-    User: UserTable
-    Task: TaskTable
-    Invite: InviteTable
-    Session: SessionTable
+    user: UserTable
+    task: TaskTable
+    invite: InviteTable
+    session: SessionTable
 }

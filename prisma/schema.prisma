@@ -7,43 +7,44 @@ datasource db {
     url = env("DATABASE_URL")
 }
 
-model User {
+model user {
     id Int @id @default(autoincrement())
     username String @unique
     email String @unique
     password String
     admin Boolean @default(false)
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    tasks Task[]
-    sessions Session[]
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+    tasks task[]
+    sessions session[]
 }
 
-model Task {
+model task {
     id Int @id @default(autoincrement())
-    user User @relation(fields: [userId], references: [id])
-    userId Int
+    user user @relation(fields: [user_id], references: [id])
+    user_id Int
     name String
-    dueAt DateTime
-    additionalReminder Boolean
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    due_at DateTime
+    additional_reminder Boolean
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
 }
 
-model Invite {
+model invite {
     id Int @id @default(autoincrement())
     email String @unique
     valid Boolean
     registered Boolean @default(false)
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
 }
 
-model Session {
+model session {
     id Int @id @default(autoincrement())
-    user User @relation(fields: [userId], references: [id])
-    userId Int
+    user user @relation(fields: [user_id], references: [id])
+    user_id Int
     key String @unique
-    expiresAt DateTime
-    createdAt DateTime @default(now())
+    user_agent String
+    expires_at DateTime
+    created_at DateTime @default(now())
 }
