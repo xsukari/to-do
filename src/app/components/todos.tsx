@@ -21,13 +21,12 @@ const iconStyle = {
 function addTodos(tasks: data.Task[], indexDay: number) {
     const elements: JSX.Element[] = []
     
-    let i = 1
-    tasks.forEach(task => {
+    tasks.forEach((task, index) => {
         elements.push(
-            <div className="w-full" key={"task" + i}>
+            <div className="w-full" key={"task" + (index + 1)}>
                 <FormControlLabel
                     data-day={indexDay}
-                    data-task={i - 1}
+                    data-task={index}
                     control={
                         <Checkbox />
                     } 
@@ -35,8 +34,6 @@ function addTodos(tasks: data.Task[], indexDay: number) {
                 />
             </div>
         )
-
-        i++
     })
 
     return elements
@@ -81,27 +78,26 @@ export default function Todos() {
             setExpanded(newExpanded ? panel : false)
         }
     
-    let i = 1
-    toDos.forEach(day => {
+    toDos.forEach((day, index) => {
         elements.push(
-            <div className="xl:w-3/4 3xl:w-2/3 4xl:w-1/2 m-auto" key={"day" + i}>
+            <div className="xl:w-3/4 3xl:w-2/3 4xl:w-1/2 m-auto" key={"day" + (index + 1)}>
                 <Accordion
-                    expanded={expanded === "panel" + i}
-                    onChange={handleChange("panel" + i)}
+                    expanded={expanded === "panel" + (index + 1)}
+                    onChange={handleChange("panel" + (index + 1))}
                     slotProps={{ transition: { unmountOnExit: true } }}
                     disableGutters
                     elevation={0}
                     square
                 >
                     <AccordionSummary
-                        aria-controls={"panel" + i + "d-content"} id={"panel" + i + "d-header"}
+                        aria-controls={"panel" + (index + 1) + "d-content"} id={"panel" + (index + 1) + "d-header"}
                         expandIcon={<ArrowForwardIosSharpIcon sx={iconStyle}/>}
                     >
                         <Typography>{day.date}</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <div onContextMenu={handleContextMenu} style={{ cursor: "context-menu" }}>
-                            {addTodos(day.tasks, i - 1)}
+                            {addTodos(day.tasks, index)}
 
                             <Menu
                                 open={contextMenu !== null}
@@ -120,8 +116,6 @@ export default function Todos() {
                 </Accordion>
             </div>
         )
-
-        i++
     })
 
     return elements
