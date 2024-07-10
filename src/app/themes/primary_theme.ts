@@ -23,6 +23,22 @@ const theme = responsiveFontSizes(
             fontFamily: inter.style.fontFamily,
         },
         components: {
+            MuiPickersCalendarHeader: {
+                styleOverrides: {
+                    root: {
+                        backgroundColor: "white",
+                        color: teal,
+                    },
+                },
+            },
+            MuiPickersYear: {
+                styleOverrides: {
+                    root: {
+                        backgroundColor: "white",
+                        color: teal,
+                    },
+                },
+            },
             MuiAccordionSummary: {
                 styleOverrides: {
                     root: {
