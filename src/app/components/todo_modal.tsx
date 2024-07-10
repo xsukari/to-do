@@ -38,6 +38,10 @@ export const TodoModal = ({ isOpen, handleClose}: Props) => {
     const [date, setDate] = React.useState<Dayjs | null>(dayjs().add(2, "hours").set("seconds", 0))
     const [task, setTask] = React.useState<string>("")
 
+    const handleSubmit = async () => {
+
+    }
+
     return (
         <Modal
             component="form"
@@ -56,56 +60,62 @@ export const TodoModal = ({ isOpen, handleClose}: Props) => {
         >
             <Fade in={isOpen}>
                 <Box sx={modalStyle}>
-                    <TextField
-                        label="To do"
-                        value={task}
-                        onChange={
-                            (event: React.ChangeEvent<HTMLInputElement>) => {
-                                setTask(event.target.value)
+                    <form onSubmit={() => {handleSubmit()}}>
+                        <TextField
+                            label="To do"
+                            value={task}
+                            onChange={
+                                (event: React.ChangeEvent<HTMLInputElement>) => {
+                                    setTask(event.target.value)
+                                }
                             }
-                        }
-                        className="w-full"
-                    />
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DateTimePicker
-                            label="Due date"
-                            value={date}
-                            onChange={(newValue) => setDate(newValue)}
-                            format="YYYY-MM-DD HH:mm:ss"
                             className="w-full"
-                            sx={{ mt: 2 }}
-                            ampm={false}
                         />
-                    </LocalizationProvider>
-                    <FormControlLabel
-                        control={
-                            <Checkbox variant="teal" defaultChecked />
-                        } 
-                        label="Additional reminder?"
-                        className="w-full my-2"
-                    />
-                    <Typography variant="caption">
-                        You will always get the initial reminder when the task is due
-                    </Typography>
-                    <div className="w-full items-end flex mt-auto">
-                        <div className="ml-auto"></div>
-                        <div className="w-1/4 min-w-1/4">
-                            <Button
-                                variant="outlined"
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DateTimePicker
+                                label="Due date"
+                                value={date}
+                                onChange={(newValue) => setDate(newValue)}
+                                format="YYYY-MM-DD HH:mm:ss"
                                 className="w-full"
-                            >
-                                Ok
-                            </Button>
+                                sx={{ mt: 2 }}
+                                ampm={false}
+                            />
+                        </LocalizationProvider>
+                        <FormControlLabel
+                            control={
+                                <Checkbox variant="teal" defaultChecked />
+                            } 
+                            label="Additional reminder?"
+                            className="w-full my-2"
+                        />
+                        <Typography variant="caption">
+                            You will always get the initial reminder when the task is due
+                        </Typography>
+                        <div className="w-full items-end flex mt-auto">
+                            <div className="ml-auto"></div>
+                            <div className="w-1/4 min-w-1/4">
+                                <Button
+                                    type="submit"
+                                    variant="outlined"
+                                    className="w-full"
+                                    onClick={() => {
+                                        handleSubmit()
+                                    }}
+                                >
+                                    Ok
+                                </Button>
+                            </div>
+                            <div className="w-1/4 min-w-1/4 ml-3">
+                                <Button
+                                    variant="outlined" 
+                                    className="w-full"
+                                >
+                                    Cancel
+                                </Button>
+                            </div>
                         </div>
-                        <div className="w-1/4 min-w-1/4 ml-3">
-                            <Button
-                                variant="outlined" 
-                                className="w-full"
-                            >
-                                Cancel
-                            </Button>
-                        </div>
-                    </div>
+                    </form>
                 </Box>
             </Fade>
         </Modal>
