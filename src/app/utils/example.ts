@@ -1,4 +1,4 @@
-export interface Task {
+export interface Todo {
     name: string,
     due: string,
     completed: boolean
@@ -6,13 +6,13 @@ export interface Task {
 
 export interface ToDo {
     date: string,
-    tasks: Task[]
+    todos: Todo[]
 }
 
 export const toDos = [
     {
         date: "2024-05-11",
-        tasks: [
+        todos: [
             {
                 name: "clean up counter",
                 due: "14:30:00",
@@ -87,7 +87,7 @@ export const toDos = [
     },
     {
         date: "2024-04-15",
-        tasks: [
+        todos: [
             {
                 name: "go grocery shopping",
                 due: "19:00:00",
@@ -102,7 +102,7 @@ export const toDos = [
     },
     {
         date: "2024-03-15",
-        tasks: [
+        todos: [
             {
                 name: "go grocery shopping",
                 due: "19:00:00",
@@ -117,7 +117,7 @@ export const toDos = [
     },
     {
         date: "2024-02-15",
-        tasks: [
+        todos: [
             {
                 name: "go grocery shopping",
                 due: "19:00:00",
@@ -132,7 +132,7 @@ export const toDos = [
     },
     {
         date: "2024-01-15",
-        tasks: [
+        todos: [
             {
                 name: "go grocery shopping",
                 due: "19:00:00",
@@ -147,7 +147,7 @@ export const toDos = [
     },
     {
         date: "2024-05-16",
-        tasks: [
+        todos: [
             {
                 name: "go grocery shopping",
                 due: "19:00:00",
@@ -162,7 +162,7 @@ export const toDos = [
     },
     {
         date: "2024-05-17",
-        tasks: [
+        todos: [
             {
                 name: "go grocery shopping",
                 due: "19:00:00",
@@ -177,7 +177,7 @@ export const toDos = [
     },
     {
         date: "2024-05-18",
-        tasks: [
+        todos: [
             {
                 name: "go grocery shopping",
                 due: "19:00:00",
@@ -192,7 +192,7 @@ export const toDos = [
     },
     {
         date: "2024-05-15",
-        tasks: [
+        todos: [
             {
                 name: "go grocery shopping",
                 due: "19:00:00",
@@ -207,7 +207,7 @@ export const toDos = [
     },
     {
         date: "2024-05-19",
-        tasks: [
+        todos: [
             {
                 name: "ask how much dedotated wam for minecraft server",
                 due: "14:00:00",

@@ -11,26 +11,26 @@ import Menu from "@mui/material/Menu"
 import MenuItem from "@mui/material/MenuItem"
 
 import * as data from "../utils/example" // For testing
-const toDos = data.toDos.sort((a, b) => Date.parse(b.date) - Date.parse(a.date))
+const todos = data.toDos.sort((a, b) => Date.parse(b.date) - Date.parse(a.date))
 
 const iconStyle = {
     fontSize: "0.9rem",
     color: "white",
 }
 
-function addTodos(tasks: data.Task[], indexDay: number) {
+function addTodos(todos: data.Todo[], indexDay: number) {
     const elements: JSX.Element[] = []
     
-    tasks.forEach((task, index) => {
+    todos.forEach((todo, index) => {
         elements.push(
-            <div className="w-full" key={"task" + (index + 1)}>
+            <div className="w-full" key={"todo" + (index + 1)}>
                 <FormControlLabel
                     data-day={indexDay}
-                    data-task={index}
+                    data-todo={index}
                     control={
                         <Checkbox />
                     } 
-                    label={task.due + " - " + task.name}
+                    label={todo.due + " - " + todo.name}
                 />
             </div>
         )
@@ -60,9 +60,9 @@ export default function Todos() {
         )
 
         const dayIndex = event.target["parentNode" as keyof object]["dataset"]["day"]
-        const taskIndex = event.target["parentNode" as keyof object]["dataset"]["task"]
-        if (dayIndex && taskIndex) {
-            console.log(toDos[dayIndex].tasks[taskIndex])
+        const todoIndex = event.target["parentNode" as keyof object]["dataset"]["todo"]
+        if (dayIndex && todoIndex) {
+            console.log(todos[dayIndex].todos[todoIndex])
         }
         //console.log(event)
     }
@@ -78,7 +78,7 @@ export default function Todos() {
             setExpanded(newExpanded ? panel : false)
         }
     
-    toDos.forEach((day, index) => {
+    todos.forEach((day, index) => {
         elements.push(
             <div className="xl:w-3/4 3xl:w-2/3 4xl:w-1/2 m-auto" key={"day" + (index + 1)}>
                 <Accordion
@@ -97,7 +97,7 @@ export default function Todos() {
                     </AccordionSummary>
                     <AccordionDetails>
                         <div onContextMenu={handleContextMenu} style={{ cursor: "context-menu" }}>
-                            {addTodos(day.tasks, index)}
+                            {addTodos(day.todos, index)}
 
                             <Menu
                                 open={contextMenu !== null}
