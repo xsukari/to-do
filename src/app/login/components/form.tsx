@@ -1,5 +1,5 @@
 "use client"
-import React from "react"
+import { useState, ChangeEvent as ReactChangeEvent } from "react"
 import TextField from "@mui/material/TextField"
 import Button from "@mui/material/Button"
 import { Typography } from "@mui/material"
@@ -26,14 +26,14 @@ const fetcher = async (url: string, { arg }: { arg: LoginCredentials }) => {
 }
 
 export default function Form() {
-    const [username, setUsername] = React.useState<string>("")
-    const [password, setPassword] = React.useState<string>("")
+    const [username, setUsername] = useState<string>("")
+    const [password, setPassword] = useState<string>("")
 
     const { trigger, isMutating } = useSWRMutation("/api/login", fetcher)
     const router = useRouter()
     
-    const [message, setMessage] = React.useState<string>("")
-    const [success, setSuccess] = React.useState<boolean>(false)
+    const [message, setMessage] = useState<string>("")
+    const [success, setSuccess] = useState<boolean>(false)
 
     const handleSubmit = async () => {
         const response = await trigger({ 
@@ -69,7 +69,7 @@ export default function Form() {
                                 value={username}
                                 size="small"
                                 onChange={
-                                    (event: React.ChangeEvent<HTMLInputElement>) => {
+                                    (event: ReactChangeEvent<HTMLInputElement>) => {
                                         setUsername(event.target.value)
                                     }
                                 }
@@ -83,7 +83,7 @@ export default function Form() {
                                 size="small"
                                 type="password"
                                 onChange={
-                                    (event: React.ChangeEvent<HTMLInputElement>) => {
+                                    (event: ReactChangeEvent<HTMLInputElement>) => {
                                         setPassword(event.target.value)
                                     }
                                 }

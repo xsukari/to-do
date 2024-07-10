@@ -1,5 +1,5 @@
 "use client"
-import React from "react"
+import { useState, MouseEvent as ReactMouseEvent, SyntheticEvent as ReactSyntheticEvent } from "react"
 import Typography from "@mui/material/Typography"
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp"
 import Accordion from "@mui/material/Accordion"
@@ -42,12 +42,12 @@ function addTodos(tasks: data.Task[], indexDay: number) {
 export default function Todos() {
     const elements: JSX.Element[] = []
 
-    const [contextMenu, setContextMenu] = React.useState<{
+    const [contextMenu, setContextMenu] = useState<{
         mouseX: number;
         mouseY: number;
     } | null>(null)
     
-    const handleContextMenu = (event: React.MouseEvent) => {
+    const handleContextMenu = (event: ReactMouseEvent) => {
         event.preventDefault()
 
         setContextMenu(
@@ -71,10 +71,10 @@ export default function Todos() {
         setContextMenu(null)
     }
 
-    const [expanded, setExpanded] = React.useState<string | false>("panel1")
+    const [expanded, setExpanded] = useState<string | false>("panel1")
 
     const handleChange =
-        (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
+        (panel: string) => (event: ReactSyntheticEvent, newExpanded: boolean) => {
             setExpanded(newExpanded ? panel : false)
         }
     

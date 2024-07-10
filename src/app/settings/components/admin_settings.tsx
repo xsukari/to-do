@@ -1,5 +1,5 @@
 "use client"
-import React from "react"
+import { useState, ChangeEvent as ReactChangeEvent } from "react"
 import { Typography } from "@mui/material"
 import TextField from "@mui/material/TextField"
 import Button from "@mui/material/Button"
@@ -28,8 +28,8 @@ function addUsers() {
 }
 
 export default function AdminSettings() {
-    const [inviteUser, setInviteUser] = React.useState<string>("")
-    const [removeUser, setRemoveUser] = React.useState<string>("")
+    const [inviteUser, setInviteUser] = useState<string>("")
+    const [removeUser, setRemoveUser] = useState<string>("")
 
     const handleChange = (event: SelectChangeEvent) => {
         setRemoveUser(event.target.value as string)
@@ -59,7 +59,7 @@ export default function AdminSettings() {
                             size="small"
                             placeholder="user@example.com"
                             onChange={
-                                (event: React.ChangeEvent<HTMLInputElement>) => {
+                                (event: ReactChangeEvent<HTMLInputElement>) => {
                                     setInviteUser(event.target.value)
                                 }
                             }

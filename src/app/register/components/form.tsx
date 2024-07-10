@@ -1,5 +1,5 @@
 "use client"
-import React from "react"
+import { useState, ChangeEvent as ReactChangeEvent } from "react"
 import TextField from "@mui/material/TextField"
 import Button from "@mui/material/Button"
 import { Typography } from "@mui/material"
@@ -26,16 +26,16 @@ const fetcher = async (url: string, { arg }: { arg: RegistrationCredentials }) =
 }
 
 export default function Form() {
-    const [email, setEmail] = React.useState<string>("")
-    const [username, setUsername] = React.useState<string>("")
-    const [password, setPassword] = React.useState<string>("")
-    const [passwordConfirmation, setPasswordConfirmation] = React.useState<string>("")
+    const [email, setEmail] = useState<string>("")
+    const [username, setUsername] = useState<string>("")
+    const [password, setPassword] = useState<string>("")
+    const [passwordConfirmation, setPasswordConfirmation] = useState<string>("")
 
     const { trigger, isMutating } = useSWRMutation("/api/register", fetcher)
 
     const router = useRouter()
-    const [message, setMessage] = React.useState<string>("")
-    const [success, setSuccess] = React.useState<boolean>(false)
+    const [message, setMessage] = useState<string>("")
+    const [success, setSuccess] = useState<boolean>(false)
 
     const handleSubmit = async () => {
         const response = await trigger({ 
@@ -73,7 +73,7 @@ export default function Form() {
                                 value={email}
                                 size="small"
                                 onChange={
-                                    (event: React.ChangeEvent<HTMLInputElement>) => {
+                                    (event: ReactChangeEvent<HTMLInputElement>) => {
                                         setEmail(event.target.value)
                                     }
                                 }
@@ -86,7 +86,7 @@ export default function Form() {
                                 value={username}
                                 size="small"
                                 onChange={
-                                    (event: React.ChangeEvent<HTMLInputElement>) => {
+                                    (event: ReactChangeEvent<HTMLInputElement>) => {
                                         setUsername(event.target.value)
                                     }
                                 }
@@ -100,7 +100,7 @@ export default function Form() {
                                 size="small"
                                 type="password"
                                 onChange={
-                                    (event: React.ChangeEvent<HTMLInputElement>) => {
+                                    (event: ReactChangeEvent<HTMLInputElement>) => {
                                         setPassword(event.target.value)
                                     }
                                 }
@@ -114,7 +114,7 @@ export default function Form() {
                                 size="small"
                                 type="password"
                                 onChange={
-                                    (event: React.ChangeEvent<HTMLInputElement>) => {
+                                    (event: ReactChangeEvent<HTMLInputElement>) => {
                                         setPasswordConfirmation(event.target.value)
                                     }
                                 }

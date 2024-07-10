@@ -1,8 +1,8 @@
 "use client"
-import React from "react"
+import { useState } from "react"
 
 const ModalState = () => {
-    const [isOpen, setOpen] = React.useState(false)
+    const [isOpen, setOpen] = useState(false)
 
     const handleOpen = () => setOpen(true)
     const handleClose = () => setOpen(false)

@@ -1,10 +1,10 @@
 "use client"
-import React from "react"
+import { useState, ChangeEvent as ReactChangeEvent} from "react"
 import { Typography, InputAdornment } from "@mui/material"
 import TextField from "@mui/material/TextField"
 
 export default function UserSettings() {
-    const [remindAfter, setRemindAfter] = React.useState<string>("")
+    const [remindAfter, setRemindAfter] = useState<string>("")
 
     return (
         <div className="w-full bg-panel 2xl:w-3/4 3xl:w-2/3 4xl:w-1/2 m-auto">
@@ -28,7 +28,7 @@ export default function UserSettings() {
                         size="small"
                         placeholder="15"
                         onChange={
-                            (event: React.ChangeEvent<HTMLInputElement>) => {
+                            (event: ReactChangeEvent<HTMLInputElement>) => {
                                 setRemindAfter(event.target.value)
                             }
                         }

@@ -1,5 +1,5 @@
 "use client"
-import React from "react"
+import { useState, ChangeEvent as ReactChangeEvent } from "react"
 import { Typography } from "@mui/material"
 import Backdrop from "@mui/material/Backdrop"
 import Box from "@mui/material/Box"
@@ -35,8 +35,8 @@ interface Props {
 }
 
 export const TodoModal = ({ isOpen, handleClose}: Props) => {
-    const [date, setDate] = React.useState<Dayjs | null>(dayjs().add(2, "hours").set("seconds", 0))
-    const [task, setTask] = React.useState<string>("")
+    const [date, setDate] = useState<Dayjs | null>(dayjs().add(2, "hours").set("seconds", 0))
+    const [task, setTask] = useState<string>("")
 
     const handleSubmit = async () => {
 
@@ -65,7 +65,7 @@ export const TodoModal = ({ isOpen, handleClose}: Props) => {
                             label="To do"
                             value={task}
                             onChange={
-                                (event: React.ChangeEvent<HTMLInputElement>) => {
+                                (event: ReactChangeEvent<HTMLInputElement>) => {
                                     setTask(event.target.value)
                                 }
                             }
