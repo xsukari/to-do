@@ -29,7 +29,12 @@ export async function middleware(request: NextRequest) {
     const user = session ? await getUserId(session.value) : undefined
 
     if (!user) {
-        if (url.pathname.startsWith("/api")) {
+        const isApi = url.pathname.startsWith("/api")
+        const isAppRoot = url.pathname.startsWith("/")
+        const isNotLogin = !url.pathname.startsWith("/login")
+        const isNotRegister = !url.pathname.startsWith("/register")
+
+        if (isApi) {
             const isNotUsersExist = !url.pathname.startsWith("/api/users-exist")
             const isNotRegister = !url.pathname.startsWith("/api/register")
             const isNotLogin = !url.pathname.startsWith("/api/login")
@@ -38,7 +43,7 @@ export async function middleware(request: NextRequest) {
             if (isNotUsersExist && isNotRegister && isNotLogin && isNotUser) {
                 return new NextResponse(null, { status: 401 })
             }
-        } else if (url.pathname.startsWith("/")) {
+        } else if (isAppRoot && isNotLogin && isNotRegister) {
             if (await usersExist()) {
                 url.pathname = "/login"
             } else {
@@ -47,29 +52,38 @@ export async function middleware(request: NextRequest) {
     
             return NextResponse.redirect(url)
         }
-    }
+    } else {
+        const isLogin = url.pathname.startsWith("/login")
+        const isRegister = url.pathname.startsWith("/register")
 
-    return response
+        if (isLogin || isRegister) {
+            url.pathname = "/"
+
+            return NextResponse.redirect(url)
+        } else {
+            return response
+        }
+    }
 }
 
 export const config = {
     matcher: [
         {
-            source: "/((?!_next/static|_next/image|favicon.ico|icon.ico|register|login).*)",
+            source: "/((?!_next/static|_next/image|favicon.ico|icon.ico).*)",
             missing: [
                 { type: "header", key: "next-router-prefetch" },
                 { type: "header", key: "purpose", value: "prefetch" },
             ]
         },
         {
-            source: "/((?!_next/static|_next/image|favicon.ico|icon.ico|register|login).*)",
+            source: "/((?!_next/static|_next/image|favicon.ico|icon.ico).*)",
             has: [
                 { type: "header", key: "next-router-prefetch" },
                 { type: "header", key: "purpose", value: "prefetch" },
             ]
         },
         {
-            source: "/((?!_next/static|_next/image|favicon.ico|icon.ico|register|login).*)",
+            source: "/((?!_next/static|_next/image|favicon.ico|icon.ico).*)",
             has: [{ type: "header", key: "x-present" }],
             missing: [{ type: "header", key: "x-missing", value: "prefetch" }],
         },
