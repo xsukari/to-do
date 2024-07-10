@@ -33,6 +33,161 @@ export const toDos = [
                 due: "18:45:00",
                 completed: false
             },
+            {
+                name: "clean up counter",
+                due: "14:30:00",
+                completed: true
+            },
+            {
+                name: "wash clothes",
+                due: "15:15:00",
+                completed: true
+            },
+            {
+                name: "meet mia",
+                due: "17:10:00",
+                completed: false
+            },
+            {
+                name: "cook",
+                due: "18:45:00",
+                completed: false
+            },
+            {
+                name: "clean up counter",
+                due: "14:30:00",
+                completed: true
+            },
+            {
+                name: "wash clothes",
+                due: "15:15:00",
+                completed: true
+            },
+            {
+                name: "meet mia",
+                due: "17:10:00",
+                completed: false
+            },
+            {
+                name: "cook",
+                due: "18:45:00",
+                completed: false
+            },
+            {
+                name: "clean up counter",
+                due: "14:30:00",
+                completed: true
+            },
+            {
+                name: "wash clothes",
+                due: "15:15:00",
+                completed: true
+            },
+        ]
+    },
+    {
+        date: "2024-04-15",
+        tasks: [
+            {
+                name: "go grocery shopping",
+                due: "19:00:00",
+                completed: false
+            },
+            {
+                name: "download more ram",
+                due: "20:45:00",
+                completed: false
+            },
+        ]
+    },
+    {
+        date: "2024-03-15",
+        tasks: [
+            {
+                name: "go grocery shopping",
+                due: "19:00:00",
+                completed: false
+            },
+            {
+                name: "download more ram",
+                due: "20:45:00",
+                completed: false
+            },
+        ]
+    },
+    {
+        date: "2024-02-15",
+        tasks: [
+            {
+                name: "go grocery shopping",
+                due: "19:00:00",
+                completed: false
+            },
+            {
+                name: "download more ram",
+                due: "20:45:00",
+                completed: false
+            },
+        ]
+    },
+    {
+        date: "2024-01-15",
+        tasks: [
+            {
+                name: "go grocery shopping",
+                due: "19:00:00",
+                completed: false
+            },
+            {
+                name: "download more ram",
+                due: "20:45:00",
+                completed: false
+            },
+        ]
+    },
+    {
+        date: "2024-05-16",
+        tasks: [
+            {
+                name: "go grocery shopping",
+                due: "19:00:00",
+                completed: false
+            },
+            {
+                name: "download more ram",
+                due: "20:45:00",
+                completed: false
+            },
+        ]
+    },
+    {
+        date: "2024-05-17",
+        tasks: [
+            {
+                name: "go grocery shopping",
+                due: "19:00:00",
+                completed: false
+            },
+            {
+                name: "download more ram",
+                due: "20:45:00",
+                completed: false
+            },
+        ]
+    },
+    {
+        date: "2024-05-18",
+        tasks: [
+            {
+                name: "go grocery shopping",
+                due: "19:00:00",
+                completed: false
+            },
+            {
+                name: "download more ram",
+                due: "20:45:00",
+                completed: false
+            },
         ]
     },
     {
