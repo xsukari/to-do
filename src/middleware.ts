@@ -44,7 +44,9 @@ export async function middleware(request: NextRequest) {
                 return new NextResponse(null, { status: 401 })
             }
         } else if (isAppRoot && isNotLogin && isNotRegister) {
-            if (await usersExist()) {
+            const doUsersExist = await usersExist()
+            
+            if (doUsersExist) {
                 url.pathname = "/login"
             } else {
                 url.pathname = "/register"
