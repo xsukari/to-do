@@ -76,7 +76,7 @@ export async function newUser(username: string, email: string, hashedPassword: s
 
     const query = db.insertInto("user").values(user)
 
-    await query.executeTakeFirst()
+    return await query.executeTakeFirst()
 }
 
 export async function removeUser(username: string, email: string) {
@@ -85,7 +85,7 @@ export async function removeUser(username: string, email: string) {
             .where("username", "=", username)
             .where("email", "=", email)
 
-    await query.executeTakeFirst()
+    return await query.executeTakeFirst()
 }
 
 export async function getUser(username: string) {
@@ -168,4 +168,13 @@ export async function getUserIdFromSession(key: string) {
     const data = await query.executeTakeFirst()
 
     return data?.user_id
+}
+
+export async function removeSession(key: string, userId: number) {
+    const query =
+        db.deleteFrom("session")
+            .where("key", "=", key)
+            .where("user_id", "=", userId)
+
+    return await query.executeTakeFirst()
 }

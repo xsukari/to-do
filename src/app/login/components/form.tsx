@@ -30,8 +30,8 @@ export default function Form() {
     const [password, setPassword] = React.useState<string>("")
 
     const { trigger, isMutating } = useSWRMutation("/api/login", fetcher)
-
     const router = useRouter()
+    
     const [message, setMessage] = React.useState<string>("")
     const [success, setSuccess] = React.useState<boolean>(false)
 
