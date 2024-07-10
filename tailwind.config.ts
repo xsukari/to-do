@@ -25,6 +25,9 @@ const config: Config = {
                 "7xl": "5120px",
                 "8xl": "6144px",
             },
+            width: {
+                "13": "52px"
+            }
         },
     },
     plugins: [],

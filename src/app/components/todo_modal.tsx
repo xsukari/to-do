@@ -44,6 +44,7 @@ export const TodoModal = ({ isOpen, handleClose}: Props) => {
             open={isOpen}
             onClose={handleClose}
             closeAfterTransition
+            //disableScrollLock // pondering about the use of this
             noValidate
             autoComplete="off"
             slots={{ backdrop: Backdrop }}
