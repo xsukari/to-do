@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     const hashedPassword = await hashPassword(validatedCreds.password)
 
     if (!await usersExist()) {
-        try {
+        const user = 
             await newUser(
                 validatedCreds.username,
                 validatedCreds.email,
@@ -32,11 +32,13 @@ export async function POST(request: Request) {
                 true
             )
 
-            text = "Registration successful. Redirecting to login shortly..."
-            success = true
-        } catch (error) {
+        if (!user) {
             text = "Registration unsuccessful. Please try again."
+            return Response.json({ message: { success: success, text: text } })
         }
+
+        text = "Registration successful. Redirecting to login shortly..."
+        success = true
 
         return Response.json({ message: { success: success, text: text } })
     } else {
