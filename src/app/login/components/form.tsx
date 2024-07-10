@@ -62,52 +62,55 @@ export default function Form() {
             </div>
             <div className="w-full bg-panel lg:w-1/2 2xl:w-1/3 m-auto">
                 <div className="py-2">
-                    <div className="flex-grow px-2 pb-2">
-                        <TextField
-                            label="Username"
-                            value={username}
-                            size="small"
-                            onChange={
-                                (event: React.ChangeEvent<HTMLInputElement>) => {
-                                    setUsername(event.target.value)
+                    <form onSubmit={() => {handleSubmit()}}>
+                        <div className="flex-grow px-2 pb-2">
+                            <TextField
+                                label="Username"
+                                value={username}
+                                size="small"
+                                onChange={
+                                    (event: React.ChangeEvent<HTMLInputElement>) => {
+                                        setUsername(event.target.value)
+                                    }
                                 }
-                            }
-                            className="w-full"
-                        />
-                    </div>
-                    <div className="flex-grow px-2 pb-2">
-                        <TextField
-                            label="Password"
-                            value={password}
-                            size="small"
-                            type="password"
-                            onChange={
-                                (event: React.ChangeEvent<HTMLInputElement>) => {
-                                    setPassword(event.target.value)
+                                className="w-full"
+                            />
+                        </div>
+                        <div className="flex-grow px-2 pb-2">
+                            <TextField
+                                label="Password"
+                                value={password}
+                                size="small"
+                                type="password"
+                                onChange={
+                                    (event: React.ChangeEvent<HTMLInputElement>) => {
+                                        setPassword(event.target.value)
+                                    }
                                 }
-                            }
-                            className="w-full"
-                        />
-                    </div>
-                    <div className="px-2 pb-2">
-                        <Link href="/register">
-                            <Typography variant="caption">
-                                    Not registered yet?
-                            </Typography>
-                        </Link>
-                    </div>
-                    <div className="w-1/4 px-2 m-auto">
-                        <Button
-                            variant="outlined" 
-                            className="w-full"
-                            disabled={isMutating}
-                            onClick={() => {
-                                handleSubmit()
-                            }}
-                        >
-                            Login
-                        </Button>
-                    </div>
+                                className="w-full"
+                            />
+                        </div>
+                        <div className="px-2 pb-2">
+                            <Link href="/register">
+                                <Typography variant="caption">
+                                        Not registered yet?
+                                </Typography>
+                            </Link>
+                        </div>
+                        <div className="w-1/4 px-2 m-auto">
+                            <Button
+                                type="submit"
+                                variant="outlined" 
+                                className="w-full"
+                                disabled={isMutating}
+                                onClick={() => {
+                                    handleSubmit()
+                                }}
+                            >
+                                Login
+                            </Button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
