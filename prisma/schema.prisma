@@ -15,11 +15,11 @@ model user {
     admin Boolean @default(false)
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
-    tasks task[]
+    tasks todo[]
     sessions session[]
 }
 
-model task {
+model todo {
     id Int @id @default(autoincrement())
     user user @relation(fields: [user_id], references: [id])
     user_id Int

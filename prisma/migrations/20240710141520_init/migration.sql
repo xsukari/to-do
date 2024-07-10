@@ -12,7 +12,7 @@ CREATE TABLE "user" (
 );
 
 -- CreateTable
-CREATE TABLE "task" (
+CREATE TABLE "todo" (
     "id" SERIAL NOT NULL,
     "user_id" INTEGER NOT NULL,
     "name" TEXT NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE "task" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "task_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "todo_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -61,7 +61,7 @@ CREATE UNIQUE INDEX "invite_email_key" ON "invite"("email");
 CREATE UNIQUE INDEX "session_key_key" ON "session"("key");
 
 -- AddForeignKey
-ALTER TABLE "task" ADD CONSTRAINT "task_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "todo" ADD CONSTRAINT "todo_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "session" ADD CONSTRAINT "session_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

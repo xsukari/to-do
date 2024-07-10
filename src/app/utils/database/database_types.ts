@@ -19,7 +19,7 @@ export type User = Selectable<UserTable>
 export type NewUser = Insertable<UserTable>
 export type UserUpdate = Updateable<UserTable>
   
-export interface TaskTable {
+export interface TodoTable {
     id: Generated<number>
     user_id: number
     name: string
@@ -28,9 +28,9 @@ export interface TaskTable {
     updated_at: ColumnType<Date>
     created_at: ColumnType<Date, never, never>
 }
-export type Task = Selectable<TaskTable>
-export type NewTask = Insertable<TaskTable>
-export type TaskUpdate = Updateable<TaskTable>
+export type Todo = Selectable<TodoTable>
+export type NewTodo = Insertable<TodoTable>
+export type TodoUpdate = Updateable<TodoTable>
 
 export interface InviteTable {
     id: Generated<number>
@@ -58,7 +58,7 @@ export type SessionUpdate = Updateable<SessionTable>
 
 export interface Database {
     user: UserTable
-    task: TaskTable
+    todo: TodoTable
     invite: InviteTable
     session: SessionTable
 }
