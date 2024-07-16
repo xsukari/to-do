@@ -24,6 +24,7 @@ model todo {
     user user @relation(fields: [user_id], references: [id])
     user_id Int
     name String
+    done Boolean @default(false)
     due_at DateTime
     additional_reminder Boolean
     created_at DateTime @default(now())

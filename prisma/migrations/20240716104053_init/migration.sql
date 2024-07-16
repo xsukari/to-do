@@ -16,6 +16,7 @@ CREATE TABLE "todo" (
     "id" SERIAL NOT NULL,
     "user_id" INTEGER NOT NULL,
     "name" TEXT NOT NULL,
+    "done" BOOLEAN NOT NULL DEFAULT false,
     "due_at" TIMESTAMP(3) NOT NULL,
     "additional_reminder" BOOLEAN NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
