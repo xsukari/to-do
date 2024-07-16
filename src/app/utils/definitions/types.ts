@@ -9,3 +9,9 @@ export interface LoginCredentials {
     username: string
     password: string
 }
+
+export interface Todo {
+    name: string
+    date: Date
+    reminder: boolean
+}

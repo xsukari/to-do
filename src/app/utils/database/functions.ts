@@ -1,5 +1,5 @@
 import { db } from "./database"
-import { NewUser, InviteUpdate, NewSession, SessionUpdate } from "./database_types"
+import { NewUser, InviteUpdate, NewSession, SessionUpdate, NewTodo } from "./database_types"
 import dayjs from "dayjs"
 
 export async function usersExist() {
@@ -175,6 +175,22 @@ export async function removeSession(key: string, userId: number) {
         db.deleteFrom("session")
             .where("key", "=", key)
             .where("user_id", "=", userId)
+
+    return await query.executeTakeFirst()
+}
+
+export async function newTodo(userId: number, name: string, date: Date, reminder: boolean) {
+    const todo: NewTodo = {
+        user_id: userId,
+        name: name,
+        due_at: date,
+        additional_reminder: reminder,
+        updated_at: new Date(),
+    }
+
+    const query =
+        db.insertInto("todo")
+            .values(todo)
 
     return await query.executeTakeFirst()
 }

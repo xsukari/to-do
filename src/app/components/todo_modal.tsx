@@ -14,6 +14,25 @@ import FormControlLabel from "@mui/material/FormControlLabel"
 import Checkbox from "@mui/material/Checkbox"
 import Button from "@mui/material/Button"
 import PropTypes from "prop-types"
+import useSWRMutation from "swr/mutation"
+import { Todo } from "../utils/definitions/types"
+import Alert from "@mui/material/Alert"
+
+const fetcher = async (url: string, { arg }: { arg: Todo }) => {
+    const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(arg),
+    })
+  
+    if (!response.ok) {
+        throw new Error("An error occurred while fetching the data.")
+    }
+  
+    return response.json()
+}
 
 const modalStyle = {
     position: "absolute",
@@ -34,12 +53,34 @@ interface Props {
     handleClose: () => void,
 }
 
-export const TodoModal = ({ isOpen, handleClose}: Props) => {
-    const [date, setDate] = useState<Dayjs | null>(dayjs().add(2, "hours").set("seconds", 0))
-    const [task, setTask] = useState<string>("")
+export const TodoModal = ({ isOpen, handleClose }: Props) => {
+    const defaultDate = dayjs().add(2, "hours").set("seconds", 0)
+    const [todo, setTodo] = useState<string>("")
+    const [date, setDate] = useState<Dayjs>(defaultDate)
+    const [reminder, setReminder] = useState<boolean>(true)
+
+    const { trigger, isMutating } = useSWRMutation("/api/new-todo", fetcher)
+
+    const [message, setMessage] = useState<string>("")
+    const [success, setSuccess] = useState<boolean>(false)
 
     const handleSubmit = async () => {
+        const response = await trigger({
+            name: todo,
+            date: date.toDate(),
+            reminder: reminder,
+        } as Todo)
 
+        setSuccess(response.message.success)
+        setMessage(response.message.text)
+
+        if (response.message.success) {
+            handleClose()
+        } else {
+            setTimeout(() => {
+                setMessage("")
+            }, 10000)
+        }
     }
 
     return (
@@ -47,6 +88,7 @@ export const TodoModal = ({ isOpen, handleClose}: Props) => {
             component="form"
             open={isOpen}
             onClose={handleClose}
+            onSubmit={() => {handleSubmit()}}
             closeAfterTransition
             //disableScrollLock // pondering about the use of this
             noValidate
@@ -60,62 +102,76 @@ export const TodoModal = ({ isOpen, handleClose}: Props) => {
         >
             <Fade in={isOpen}>
                 <Box sx={modalStyle}>
-                    <form onSubmit={() => {handleSubmit()}}>
-                        <TextField
-                            label="To do"
-                            value={task}
-                            onChange={
-                                (event: ReactChangeEvent<HTMLInputElement>) => {
-                                    setTask(event.target.value)
-                                }
+                    <TextField
+                        label="To do"
+                        value={todo}
+                        onChange={
+                            (event: ReactChangeEvent<HTMLInputElement>) => {
+                                setTodo(event.target.value)
                             }
+                        }
+                        className="w-full"
+                    />
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DateTimePicker
+                            label="Due date"
+                            value={date}
+                            onChange={(newValue) => setDate(newValue ? newValue : defaultDate)}
+                            format="YYYY-MM-DD HH:mm:ss"
                             className="w-full"
+                            sx={{ mt: 2 }}
+                            ampm={false}
                         />
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DateTimePicker
-                                label="Due date"
-                                value={date}
-                                onChange={(newValue) => setDate(newValue)}
-                                format="YYYY-MM-DD HH:mm:ss"
-                                className="w-full"
-                                sx={{ mt: 2 }}
-                                ampm={false}
+                    </LocalizationProvider>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                variant="teal"
+                                checked={reminder}
+                                onChange={
+                                    (event: ReactChangeEvent<HTMLInputElement>) => {
+                                        setReminder(event.target.checked)
+                                    }
+                                }
                             />
-                        </LocalizationProvider>
-                        <FormControlLabel
-                            control={
-                                <Checkbox variant="teal" defaultChecked />
-                            } 
-                            label="Additional reminder?"
-                            className="w-full my-2"
-                        />
-                        <Typography variant="caption">
-                            You will always get the initial reminder when the task is due
-                        </Typography>
-                        <div className="w-full items-end flex mt-auto">
-                            <div className="ml-auto"></div>
-                            <div className="w-1/4 min-w-1/4">
-                                <Button
-                                    type="submit"
-                                    variant="outlined"
-                                    className="w-full"
-                                    onClick={() => {
-                                        handleSubmit()
-                                    }}
-                                >
-                                    Ok
-                                </Button>
-                            </div>
-                            <div className="w-1/4 min-w-1/4 ml-3">
-                                <Button
-                                    variant="outlined" 
-                                    className="w-full"
-                                >
-                                    Cancel
-                                </Button>
-                            </div>
+                        } 
+                        label="Additional reminder?"
+                        className="w-full my-2"
+                    />
+                    <Typography variant="caption">
+                        You will always get the initial reminder when the todo is due
+                    </Typography>
+                    <div className="h-12 my-2">
+                        {message && <Alert severity={success ? "success" : "error"}>{message}</Alert>}
+                    </div>
+                    <div className="w-full items-end flex mt-auto">
+                        <div className="ml-auto"></div>
+                        <div className="w-1/4 min-w-1/4">
+                            <Button
+                                type="submit"
+                                variant="outlined"
+                                className="w-full"
+                                disabled={isMutating}
+                                onClick={() => {
+                                    handleSubmit()
+                                }}
+                            >
+                                Ok
+                            </Button>
                         </div>
-                    </form>
+                        <div className="w-1/4 min-w-1/4 ml-3">
+                            <Button
+                                variant="outlined" 
+                                className="w-full"
+                                disabled={isMutating}
+                                onClick={() => {
+                                    handleClose()
+                                }}
+                            >
+                                Cancel
+                            </Button>
+                        </div>
+                    </div>
                 </Box>
             </Fade>
         </Modal>
