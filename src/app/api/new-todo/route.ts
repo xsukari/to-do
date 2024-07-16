@@ -16,7 +16,7 @@ export async function POST(request: Request) {
         return Response.json({ message: { success: success, text: text } })
     }
 
-    const createdTodo = newTodo(userId, todo.name, todo.date, todo.reminder)
+    const createdTodo = await newTodo(userId, todo.name, todo.date, todo.reminder)
     if (!createdTodo) {
         text = "Could not create todo."
         return Response.json({ message: { success: success, text: text } })
