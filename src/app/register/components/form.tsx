@@ -61,7 +61,7 @@ export default function Form() {
 
     return (
         <div className="flex flex-col min-h-screen">
-            <div className="h-12">
+            <div className="fixed w-3/4">
                 {message && <Alert severity={success ? "success" : "error"}>{message}</Alert>}
             </div>
             <div className="w-full bg-panel lg:w-1/2 2xl:w-1/3 m-auto">
