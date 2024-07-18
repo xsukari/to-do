@@ -1,5 +1,5 @@
 import { cookies } from "next/headers"
-import { getUserIdFromSession, cleanupExpiredSessions, removeSession } from "../../utils/database/functions"
+import { userIdFromSession, cleanupExpiredSessions, removeSession } from "../../utils/database/functions"
 
 export async function POST() {
     let text = ""
@@ -7,7 +7,7 @@ export async function POST() {
 
     const session = cookies().get("session")
     const key = session?.value
-    const userId = key ? await getUserIdFromSession(key) : undefined
+    const userId = key ? await userIdFromSession(key) : undefined
     if (!userId || !key) {
         text = "Could not find user or session."
         return Response.json({ message: { success: success, text: text } })

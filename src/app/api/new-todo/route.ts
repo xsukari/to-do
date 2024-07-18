@@ -1,6 +1,6 @@
 import { Todo } from "@/app/utils/definitions/types"
 import { cookies } from "next/headers"
-import { getUserIdFromSession, newTodo } from "../../utils/database/functions"
+import { userIdFromSession, newTodo } from "../../utils/database/functions"
 
 export async function POST(request: Request) {
     let text = ""
@@ -10,7 +10,7 @@ export async function POST(request: Request) {
 
     const session = cookies().get("session")
     const key = session?.value
-    const userId = key ? await getUserIdFromSession(key) : undefined
+    const userId = key ? await userIdFromSession(key) : undefined
     if (!userId || !key) {
         text = "Could not find user or session."
         return Response.json({ message: { success: success, text: text } })

@@ -228,7 +228,7 @@ export async function cleanupExpiredSessions(userId: number) {
     })
 }
 
-export async function getUserIdFromSession(key: string) {
+export async function userIdFromSession(key: string) {
     const query =
         db.selectFrom("session")
             .select("user_id")
