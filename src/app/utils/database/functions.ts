@@ -1,5 +1,5 @@
 import { db } from "./database"
-import { NewUser, InviteUpdate, NewSession, SessionUpdate, NewTodo, NewSettingUser } from "./database_types"
+import { NewUser, InviteUpdate, NewSession, SessionUpdate, NewTodo, NewSettingUser } from "./types"
 import dayjs from "dayjs"
 
 function defaultSettings() {
