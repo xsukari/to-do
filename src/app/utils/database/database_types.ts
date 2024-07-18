@@ -57,9 +57,33 @@ export type Session = Selectable<SessionTable>
 export type NewSession = Insertable<SessionTable>
 export type SessionUpdate = Updateable<SessionTable>
 
+export interface SettingUserTable {
+    id: Generated<number>
+    user_id: number
+    setting_id: number
+    value: string
+    updated_at: ColumnType<Date>
+    created_at: ColumnType<Date, never, never>
+}
+export type SettingUser = Selectable<SettingUserTable>
+export type NewSettingUser = Insertable<SettingUserTable>
+export type SettingUserUpdate = Updateable<SettingUserTable>
+
+export interface SettingTable {
+    id: Generated<number>
+    name: string
+    updated_at: ColumnType<Date>
+    created_at: ColumnType<Date, never, never>
+}
+export type Setting = Selectable<SettingTable>
+export type NewSetting = Insertable<SettingTable>
+export type SettingUpdate = Updateable<SettingTable>
+
 export interface Database {
     user: UserTable
     todo: TodoTable
     invite: InviteTable
     session: SessionTable
+    setting_user: SettingUserTable
+    setting: SettingTable
 }

@@ -13,10 +13,11 @@ model user {
     email String @unique
     password String
     admin Boolean @default(false)
-    created_at DateTime @default(now())
     updated_at DateTime @updatedAt
+    created_at DateTime @default(now())
     tasks todo[]
     sessions session[]
+    settings_user setting_user[]
 }
 
 model todo {
@@ -27,8 +28,8 @@ model todo {
     done Boolean @default(false)
     due_at DateTime
     additional_reminder Boolean
-    created_at DateTime @default(now())
     updated_at DateTime @updatedAt
+    created_at DateTime @default(now())
 }
 
 model invite {
@@ -36,8 +37,8 @@ model invite {
     email String @unique
     valid Boolean
     registered Boolean @default(false)
-    created_at DateTime @default(now())
     updated_at DateTime @updatedAt
+    created_at DateTime @default(now())
 }
 
 model session {
@@ -48,4 +49,23 @@ model session {
     user_agent String
     expires_at DateTime
     created_at DateTime @default(now())
+}
+
+model setting_user {
+    id Int @id @default(autoincrement())
+    user user @relation(fields: [user_id], references: [id])
+    user_id Int
+    setting setting @relation(fields: [setting_id], references: [id])
+    setting_id Int
+    value String
+    updated_at DateTime @updatedAt
+    created_at DateTime @default(now())
+}
+
+model setting {
+    id Int @id @default(autoincrement())
+    name String
+    updated_at DateTime @updatedAt
+    created_at DateTime @default(now())
+    settings_user setting_user[]
 }
