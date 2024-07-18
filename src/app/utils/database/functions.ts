@@ -1,6 +1,43 @@
 import { db } from "./database"
-import { NewUser, InviteUpdate, NewSession, SessionUpdate, NewTodo } from "./database_types"
+import { NewUser, InviteUpdate, NewSession, SessionUpdate, NewTodo, NewSettingUser } from "./database_types"
 import dayjs from "dayjs"
+
+function defaultSettings() {
+    const defaultTimeRangePast: NewSettingUser = {
+        user_id: 0,
+        setting_id: 1,
+        value: "1d",
+        updated_at: new Date(),
+    }
+    
+    const defaultTimeRangeFuture: NewSettingUser = {
+        user_id: 0,
+        setting_id: 2,
+        value: "1d",
+        updated_at: new Date(),
+    }
+    
+    const defaultAlwaysShowIncomplete: NewSettingUser = {
+        user_id: 0,
+        setting_id: 3,
+        value: "true",
+        updated_at: new Date(),
+    }
+    
+    const defaultAdditionalReminderAfter: NewSettingUser = {
+        user_id: 0,
+        setting_id: 4,
+        value: "15",
+        updated_at: new Date(),
+    }
+    
+    return [
+        defaultTimeRangePast,
+        defaultTimeRangeFuture,
+        defaultAlwaysShowIncomplete,
+        defaultAdditionalReminderAfter,
+    ]
+}
 
 export async function usersExist() {
     const query = 
@@ -27,7 +64,7 @@ export async function invitedAndValid(email: string) {
     return data ? true : false
 }
 
-export async function newUserAndUpdateInvite(username: string, email: string, hashedPassword: string, admin: boolean) {
+export async function newUser(username: string, email: string, hashedPassword: string, admin: boolean) {
     const user: NewUser = {
         username: username,
         email: email,
@@ -42,15 +79,30 @@ export async function newUserAndUpdateInvite(username: string, email: string, ha
         updated_at: new Date(),
     }
 
+    const settings = defaultSettings()
+
     await db.transaction().execute(async (trx) => {
-        trx.insertInto("user")
-            .values(user)
-            .executeTakeFirst()
+        const insertedUser = 
+            await trx.insertInto("user")
+                .values(user)
+                .returning("id")
+                .executeTakeFirst()
+
+        if (!insertedUser) {
+            throw Error("No user was inserted into database.")
+        }
 
         trx.updateTable("invite")
             .set(invite)
             .where("email", "=", email)
             .executeTakeFirst()
+
+        settings.forEach(setting => {
+            setting.user_id = insertedUser.id
+            trx.insertInto("setting_user")
+                .values(setting)
+                .executeTakeFirst()
+        })
     })
 }
 
@@ -65,7 +117,7 @@ export async function usernameTaken(username: string) {
     return data ? true : false
 }
 
-export async function newUser(username: string, email: string, hashedPassword: string, admin: boolean) {
+export async function newUserFirst(username: string, email: string, hashedPassword: string, admin: boolean) {
     const user: NewUser = {
         username: username,
         email: email,
@@ -74,9 +126,26 @@ export async function newUser(username: string, email: string, hashedPassword: s
         updated_at: new Date(),
     }
 
-    const query = db.insertInto("user").values(user)
+    const settings = defaultSettings()
 
-    return await query.executeTakeFirst()
+    await db.transaction().execute(async (trx) => {
+        const insertedUser = 
+            await trx.insertInto("user")
+                .values(user)
+                .returning("id")
+                .executeTakeFirst()
+
+        if (!insertedUser) {
+            throw Error("No user was inserted into database.")
+        }
+
+        settings.forEach(setting => {
+            setting.user_id = insertedUser.id
+            trx.insertInto("setting_user")
+                .values(setting)
+                .executeTakeFirst()
+        })
+    })
 }
 
 export async function removeUser(username: string, email: string) {
@@ -193,4 +262,8 @@ export async function newTodo(userId: number, name: string, date: Date, reminder
             .values(todo)
 
     return await query.executeTakeFirst()
+}
+
+export async function getTodos(userId: number) {
+    
 }

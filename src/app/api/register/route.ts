@@ -2,9 +2,9 @@ import { RegistrationCredentials } from "../../utils/definitions/types"
 import { 
     usersExist,
     invitedAndValid,
-    newUserAndUpdateInvite,
-    usernameTaken,
     newUser,
+    usernameTaken,
+    newUserFirst,
 } from "../../utils/database/functions"
 import { validateRegistration } from "../../utils/tools/validation"
 import { hashPassword } from "../../utils/tools/crypto"
@@ -24,21 +24,19 @@ export async function POST(request: Request) {
     const hashedPassword = await hashPassword(validatedCreds.password)
 
     if (!await usersExist()) {
-        const user = 
-            await newUser(
+        try {
+            await newUserFirst(
                 validatedCreds.username,
                 validatedCreds.email,
                 hashedPassword,
                 true
             )
 
-        if (!user) {
+            text = "Registration successful. Redirecting to login shortly..."
+            success = true
+        } catch (error) {
             text = "Registration unsuccessful. Please try again."
-            return Response.json({ message: { success: success, text: text } })
         }
-
-        text = "Registration successful. Redirecting to login shortly..."
-        success = true
 
         return Response.json({ message: { success: success, text: text } })
     } else {
@@ -51,7 +49,7 @@ export async function POST(request: Request) {
         }
 
         try {
-            await newUserAndUpdateInvite(
+            await newUser(
                 validatedCreds.username,
                 validatedCreds.email,
                 hashedPassword,
