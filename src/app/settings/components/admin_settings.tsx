@@ -31,12 +31,8 @@ export default function AdminSettings() {
     const [inviteUser, setInviteUser] = useState<string>("")
     const [removeUser, setRemoveUser] = useState<string>("")
 
-    const handleChange = (event: SelectChangeEvent) => {
-        setRemoveUser(event.target.value as string)
-    }
-
     const { data, error } = useSWR("/api/test", fetcher)
-    //const { data: dataUpdate, error: errorUpdate } = useSWR("/api/service-update", fetcher)
+    //const { data: dataUpdate, error: errorUpdate } = useSWR("/api/update-service", fetcher)
 
     if (error) return (<div>Failed to load</div>)
     if (!data) return (<div>Loading...</div>)
@@ -93,7 +89,11 @@ export default function AdminSettings() {
                                 value={removeUser}
                                 label="User"
                                 size="small"
-                                onChange={handleChange}
+                                onChange={
+                                    (event: SelectChangeEvent) => {
+                                        setRemoveUser(event.target.value as string)
+                                    }
+                                }
                             >
                                 {addUsers()}
                             </Select>
