@@ -1,6 +1,7 @@
 import { db } from "./database"
-import { NewUser, InviteUpdate, NewSession, SessionUpdate, NewTodo, NewSettingUser } from "./types"
+import { NewUser, InviteUpdate, NewSession, SessionUpdate, NewTodo, NewSettingUser, SettingUserUpdate } from "./types"
 import dayjs from "dayjs"
+import { settings as settingsNames } from "../definitions/values"
 
 function defaultSettings() {
     const defaultTimeRangePast: NewSettingUser = {
@@ -264,6 +265,78 @@ export async function newTodo(userId: number, name: string, date: Date, reminder
     return await query.executeTakeFirst()
 }
 
-export async function getTodos(userId: number) {
-    
+export async function settings(userId: number) {
+    const timeRangePast =
+        await db.selectFrom("setting_user")
+            .select("value")
+            .leftJoin("setting", "setting.id", "setting_id")
+            .where("user_id", "=", userId)
+            .where("name", "=", settingsNames.timeRangePast)
+            .executeTakeFirst()
+
+    const timeRangeFuture =
+        await db.selectFrom("setting_user")
+            .select("value")
+            .leftJoin("setting", "setting.id", "setting_id")
+            .where("user_id", "=", userId)
+            .where("name", "=", settingsNames.timeRangeFuture)
+            .executeTakeFirst()
+
+    const alwaysShowIncomplete =
+        await db.selectFrom("setting_user")
+            .select("value")
+            .leftJoin("setting", "setting.id", "setting_id")
+            .where("user_id", "=", userId)
+            .where("name", "=", settingsNames.alwaysShowIncomplete)
+            .executeTakeFirst()
+
+    const additionalReminderAfter =
+        await db.selectFrom("setting_user")
+            .select("value")
+            .leftJoin("setting", "setting.id", "setting_id")
+            .where("user_id", "=", userId)
+            .where("name", "=", settingsNames.additionalReminderAfter)
+            .executeTakeFirst()
+
+    if (!timeRangePast || !timeRangeFuture || !alwaysShowIncomplete || !additionalReminderAfter) {
+        return null
+    }
+
+    return {
+        timeRangePast: timeRangePast.value,
+        timeRangeFuture: timeRangeFuture.value,
+        alwaysShowIncomplete: alwaysShowIncomplete.value,
+        additionalReminderAfter: additionalReminderAfter.value,
+    }
+}
+
+export async function updateSettings(userId: number, settings: { name: string, value: string }[]) {
+    await db.transaction().execute(async (trx) => {
+        settings.forEach(async (setting) => {
+            const settingId =
+                await trx.selectFrom("setting")
+                    .select("id")
+                    .where("name", "=", setting.name)
+                    .executeTakeFirst()
+
+            if (!settingId) {
+                throw Error("No matching setting definition was found.")
+            }
+
+            const settingUpdate: SettingUserUpdate = {
+                value: setting.value,
+                updated_at: new Date(),
+            }
+
+            trx.updateTable("setting_user")
+                .where("setting_id", "=", settingId.id)
+                .set(settingUpdate)
+                .executeTakeFirst()
+
+        })
+    })
+}
+
+export async function todos(/*userId: number*/) {
+
 }

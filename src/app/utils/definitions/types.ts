@@ -15,3 +15,17 @@ export interface Todo {
     date: Date
     reminder: boolean
 }
+
+export interface Settings {
+    timeRangePast: string
+    timeRangeFuture: string
+    alwaysShowIncomplete: boolean
+    additionalReminderAfter: number
+}
+
+export interface SetSettings {
+    timeRangePast?: string
+    timeRangeFuture?: string
+    alwaysShowIncomplete?: string
+    additionalReminderAfter?: string
+}
