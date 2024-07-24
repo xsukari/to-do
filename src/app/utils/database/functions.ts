@@ -83,29 +83,51 @@ export async function newUser(username: string, email: string, hashedPassword: s
 
     const settings = defaultSettings()
 
-    await db.transaction().execute(async (trx) => {
-        const insertedUser = 
-            await trx.insertInto("user")
-                .values(user)
-                .returning("id")
-                .executeTakeFirst()
+    try {
+        await db.transaction().execute(async (trx) => {
+            const insertResult: { name: string, id: number }[] = []
 
-        if (!insertedUser) {
-            throw Error("No user was inserted into database.")
-        }
+            const insertedUser = 
+                await trx.insertInto("user")
+                    .values(user)
+                    .returning("id")
+                    .executeTakeFirst()
+    
+            if (!insertedUser) {
+                throw Error("User could not be created.")
+            }
 
-        trx.updateTable("invite")
-            .set(invite)
-            .where("email", "=", email)
-            .executeTakeFirst()
+            insertResult.push({ name: "user", id: insertedUser.id })
+    
+            const updatedInvite =
+                trx.updateTable("invite")
+                    .set(invite)
+                    .where("email", "=", email)
+                    .executeTakeFirst()
 
-        settings.forEach(setting => {
-            setting.user_id = insertedUser.id
-            trx.insertInto("setting_user")
-                .values(setting)
-                .executeTakeFirst()
+            if (!updatedInvite) {
+                throw Error("Invite could not be updated.")
+            }
+    
+            settings.forEach(async (setting) => {
+                setting.user_id = insertedUser.id
+
+                const insertedSetting = 
+                    await trx.insertInto("setting_user")
+                        .values(setting)
+                        .returning("id")
+                        .executeTakeFirst()
+
+                if (!insertedSetting) {
+                    throw Error("Setting could not be created.")
+                }
+
+                insertResult.push({ name: "setting_user", id: insertedSetting.id })
+            })
         })
-    })
+    } catch (error) {
+        return null
+    }
 }
 
 export async function usernameTaken(username: string) {
@@ -130,24 +152,43 @@ export async function newUserFirst(username: string, email: string, hashedPasswo
 
     const settings = defaultSettings()
 
-    await db.transaction().execute(async (trx) => {
-        const insertedUser = 
-            await trx.insertInto("user")
-                .values(user)
-                .returning("id")
-                .executeTakeFirst()
+    try {
+        return await db.transaction().execute(async (trx) => {
+            const insertResult: { name: string, id: number }[] = []
 
-        if (!insertedUser) {
-            throw Error("No user was inserted into database.")
-        }
+            const insertedUser =
+                await trx.insertInto("user")
+                    .values(user)
+                    .returning("id")
+                    .executeTakeFirst()
+    
+            if (!insertedUser) {
+                throw Error("User could not be created.")
+            }
 
-        settings.forEach(setting => {
-            setting.user_id = insertedUser.id
-            trx.insertInto("setting_user")
-                .values(setting)
-                .executeTakeFirst()
+            insertResult.push({ name: "user", id: insertedUser.id })
+    
+            settings.forEach(async (setting) => {
+                setting.user_id = insertedUser.id
+
+                const insertedSetting =
+                    await trx.insertInto("setting_user")
+                        .values(setting)
+                        .returning("id")
+                        .executeTakeFirst()
+
+                if (!insertedSetting) {
+                    throw Error("Setting could not be created.")
+                }
+
+                insertResult.push({ name: "setting_user", id: insertedSetting.id })
+            })
+
+            return insertResult
         })
-    })
+    } catch (error) {
+        return null
+    }
 }
 
 export async function removeUser(username: string, email: string) {
