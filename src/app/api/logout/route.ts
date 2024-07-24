@@ -24,7 +24,11 @@ export async function POST() {
     text = "Logout successful."
     success = true
 
-    await cleanupExpiredSessions(userId)
+    const deletedSessions = await cleanupExpiredSessions(userId)
+    if (!deletedSessions) {
+        // TODO: think of something good to do here
+        // text = "Logout successful. Some of your expired sessions could not be cleaned up, please contact your administrator."
+    }
 
     return Response.json({ message: { success: success, text: text } })
 }

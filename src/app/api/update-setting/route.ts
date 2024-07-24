@@ -24,9 +24,8 @@ export async function POST(request: Request) {
         settingsArray.push({ name: setting, value: value })
     })
 
-    try {
-        await updateSettings(userId, settingsArray)
-    } catch {
+    const updatedSettings = await updateSettings(userId, settingsArray)
+    if (!updatedSettings) {
         text = "Could not update settings."
         return Response.json({ message: { success: success, text: text } })
     }

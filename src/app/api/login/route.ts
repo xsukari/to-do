@@ -54,7 +54,12 @@ export async function POST(request: Request) {
     text = "Login successful. Redirecting to app shortly..."
     success = true
 
-    await cleanupExpiredSessions(user.id)
+    const deletedSessions = await cleanupExpiredSessions(user.id)
+    if (!deletedSessions) {
+        text = "Login successful. Some of your expired sessions could not be cleaned up, please contact your administrator."
+        + " "
+        + "Redirecting to app shortly..."
+    }
 
     return Response.json({ message: { success: success, text: text } })
 }

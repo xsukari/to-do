@@ -2,6 +2,7 @@ import { db } from "./database"
 import { NewUser, InviteUpdate, NewSession, SessionUpdate, NewTodo, NewSettingUser, SettingUserUpdate } from "./types"
 import dayjs from "dayjs"
 import { settings as settingsNames } from "../definitions/values"
+import { DeleteResult, UpdateResult } from "kysely"
 
 function defaultSettings() {
     const defaultTimeRangePast: NewSettingUser = {
@@ -214,19 +215,38 @@ export async function cleanupExpiredSessions(userId: number) {
             .where("user_id", "=", userId)
             .execute()
 
-    await db.transaction().execute(async (trx) => {
-        sessions.forEach(session => {
-            const expiresAt = dayjs(session.expires_at)
-            const now = dayjs()
+    if (!sessions) {
+        return "No sessions to clean up."
+    }
 
-            if (now.isAfter(expiresAt)) {
-                trx.deleteFrom("session")
-                    .where("user_id", "=", userId)
-                    .where("id", "=", session.id)
-                    .executeTakeFirst()
-            }
+    try {
+        return await db.transaction().execute(async (trx) => {
+            const deleteResult: DeleteResult[] = []
+    
+            sessions.forEach(async (session) => {
+                const expiresAt = dayjs(session.expires_at)
+                const now = dayjs()
+    
+                if (now.isAfter(expiresAt)) {
+                    const deletedSession =
+                        await trx.deleteFrom("session")
+                            .where("user_id", "=", userId)
+                            .where("id", "=", session.id)
+                            .executeTakeFirst()
+    
+                    if (!deletedSession) {
+                        throw Error("Sessions could not be cleaned up.")
+                    }
+    
+                    deleteResult.push(deletedSession)
+                }
+            })
+    
+            return deleteResult
         })
-    })
+    } catch (error) {
+        return null
+    }
 }
 
 export async function userIdFromSession(key: string) {
@@ -311,30 +331,44 @@ export async function settings(userId: number) {
 }
 
 export async function updateSettings(userId: number, settings: { name: string, value: string }[]) {
-    await db.transaction().execute(async (trx) => {
-        settings.forEach(async (setting) => {
-            const settingId =
-                await trx.selectFrom("setting")
-                    .select("id")
-                    .where("name", "=", setting.name)
-                    .executeTakeFirst()
+    try {
+        return await db.transaction().execute(async (trx) => {
+            const updateResult: UpdateResult[] = []
+    
+            settings.forEach(async (setting) => {
+                const settingId =
+                    await trx.selectFrom("setting")
+                        .select("id")
+                        .where("name", "=", setting.name)
+                        .executeTakeFirst()
+    
+                if (!settingId) {
+                    throw Error("No matching setting definition was found.")
+                }
+    
+                const settingUpdate: SettingUserUpdate = {
+                    value: setting.value,
+                    updated_at: new Date(),
+                }
 
-            if (!settingId) {
-                throw Error("No matching setting definition was found.")
-            }
+                const updatedSetting =
+                    await trx.updateTable("setting_user")
+                        .where("setting_id", "=", settingId.id)
+                        .set(settingUpdate)
+                        .executeTakeFirst()
 
-            const settingUpdate: SettingUserUpdate = {
-                value: setting.value,
-                updated_at: new Date(),
-            }
+                if (!updatedSetting) {
+                    throw Error("Setting could not be updated.")
+                }
+    
+                updateResult.push(updatedSetting)
+            })
 
-            trx.updateTable("setting_user")
-                .where("setting_id", "=", settingId.id)
-                .set(settingUpdate)
-                .executeTakeFirst()
-
+            return updateResult
         })
-    })
+    } catch (error) {
+        return null
+    }
 }
 
 export async function todos(/*userId: number*/) {
