@@ -9,16 +9,13 @@ import Checkbox from "@mui/material/Checkbox"
 import FormControlLabel from "@mui/material/FormControlLabel"
 import Menu from "@mui/material/Menu"
 import MenuItem from "@mui/material/MenuItem"
+import useSWR from "swr"
+import { Todo, TodoGroup } from "../utils/definitions/types"
+import dayjs from "dayjs"
 
-import * as data from "../utils/example" // For testing
-const todos = data.toDos.sort((a, b) => Date.parse(b.date) - Date.parse(a.date))
+const fetcher = (url: URL | RequestInfo, init?: RequestInit | undefined) => fetch(url, init).then((res) => res.json())
 
-const iconStyle = {
-    fontSize: "0.9rem",
-    color: "white",
-}
-
-function addTodos(todos: data.Todo[], indexDay: number) {
+function addTodos(todos: Todo[], indexDay: number) {
     const elements: JSX.Element[] = []
     
     todos.forEach((todo, index) => {
@@ -30,7 +27,7 @@ function addTodos(todos: data.Todo[], indexDay: number) {
                     control={
                         <Checkbox />
                     } 
-                    label={todo.due + " - " + todo.name}
+                    label={dayjs(todo.due).format("HH:mm") + " - " + todo.name}
                 />
             </div>
         )
@@ -41,6 +38,13 @@ function addTodos(todos: data.Todo[], indexDay: number) {
 
 export default function Todos() {
     const elements: JSX.Element[] = []
+
+    const { data } = useSWR("/api/todos", fetcher)
+
+    const iconStyle = {
+        fontSize: "0.9rem",
+        color: "white",
+    }
 
     const [contextMenu, setContextMenu] = useState<{
         mouseX: number;
@@ -62,13 +66,8 @@ export default function Todos() {
         const dayIndex = event.target["parentNode" as keyof object]["dataset"]["day"]
         const todoIndex = event.target["parentNode" as keyof object]["dataset"]["todo"]
         if (dayIndex && todoIndex) {
-            console.log(todos[dayIndex].todos[todoIndex])
+            //console.log(todos[dayIndex].todos[todoIndex])
         }
-        //console.log(event)
-    }
-    
-    const handleClose = () => {
-        setContextMenu(null)
     }
 
     const [expanded, setExpanded] = useState<string | false>("panel1")
@@ -77,46 +76,56 @@ export default function Todos() {
         (panel: string) => (event: ReactSyntheticEvent, newExpanded: boolean) => {
             setExpanded(newExpanded ? panel : false)
         }
-    
-    todos.forEach((day, index) => {
-        elements.push(
-            <div className="xl:w-3/4 3xl:w-2/3 4xl:w-1/2 m-auto" key={"day" + (index + 1)}>
-                <Accordion
-                    expanded={expanded === "panel" + (index + 1)}
-                    onChange={handleChange("panel" + (index + 1))}
-                    slotProps={{ transition: { unmountOnExit: true } }}
-                    disableGutters
-                    elevation={0}
-                    square
-                >
-                    <AccordionSummary
-                        aria-controls={"panel" + (index + 1) + "d-content"} id={"panel" + (index + 1) + "d-header"}
-                        expandIcon={<ArrowForwardIosSharpIcon sx={iconStyle}/>}
-                    >
-                        <Typography>{day.date}</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <div onContextMenu={handleContextMenu} style={{ cursor: "context-menu" }}>
-                            {addTodos(day.todos, index)}
 
-                            <Menu
-                                open={contextMenu !== null}
-                                onClose={handleClose}
-                                anchorReference="anchorPosition"
-                                anchorPosition={
-                                    contextMenu !== null
-                                        ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
-                                        : undefined
-                                }
-                            >
-                                <MenuItem variant="black" onClick={handleClose}>Edit</MenuItem>
-                            </Menu>
-                        </div>
-                    </AccordionDetails>
-                </Accordion>
-            </div>
-        )
-    })
+    if (data) {
+        (data.message as TodoGroup[]).forEach((todoGroup, index) => {
+            elements.push(
+                <div className="xl:w-3/4 3xl:w-2/3 4xl:w-1/2 m-auto" key={"day" + (index + 1)}>
+                    <Accordion
+                        expanded={expanded === "panel" + (index + 1)}
+                        onChange={handleChange("panel" + (index + 1))}
+                        slotProps={{ transition: { unmountOnExit: true } }}
+                        disableGutters
+                        elevation={0}
+                        square
+                    >
+                        <AccordionSummary
+                            aria-controls={"panel" + (index + 1) + "d-content"} id={"panel" + (index + 1) + "d-header"}
+                            expandIcon={<ArrowForwardIosSharpIcon sx={iconStyle}/>}
+                        >
+                            <Typography>{dayjs(todoGroup.date).format("YYYY-MM-DD")}</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <div onContextMenu={handleContextMenu} style={{ cursor: "context-menu" }}>
+                                {addTodos(todoGroup.todos, index)}
+    
+                                <Menu
+                                    open={contextMenu !== null}
+                                    onClose={() => {
+                                        setContextMenu(null)
+                                    }}
+                                    anchorReference="anchorPosition"
+                                    anchorPosition={
+                                        contextMenu !== null
+                                            ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
+                                            : undefined
+                                    }
+                                >
+                                    <MenuItem variant="black"
+                                        onClick={() => {
+                                            setContextMenu(null)
+                                        }}
+                                    >
+                                        Edit
+                                    </MenuItem>
+                                </Menu>
+                            </div>
+                        </AccordionDetails>
+                    </Accordion>
+                </div>
+            )
+        })
+    }
 
     return elements
 }

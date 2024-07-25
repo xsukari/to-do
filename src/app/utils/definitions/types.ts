@@ -12,8 +12,14 @@ export interface LoginCredentials {
 
 export interface Todo {
     name: string
-    date: Date
+    due: Date
     reminder: boolean
+    done?: boolean
+}
+
+export interface TodoGroup {
+    date: Date
+    todos: Todo[]
 }
 
 export interface Settings {

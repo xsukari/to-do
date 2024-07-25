@@ -3,6 +3,7 @@ import { NewUser, InviteUpdate, NewSession, SessionUpdate, NewTodo, NewSettingUs
 import dayjs from "dayjs"
 import { settings as settingsNames } from "../definitions/values"
 import { DeleteResult, UpdateResult } from "kysely"
+import { dateFromRangeValue } from "../tools/date"
 
 function defaultSettings() {
     const defaultTimeRangePast: NewSettingUser = {
@@ -310,11 +311,11 @@ export async function removeSession(key: string, userId: number) {
     return await query.executeTakeFirst()
 }
 
-export async function newTodo(userId: number, name: string, date: Date, reminder: boolean) {
+export async function newTodo(userId: number, name: string, due: Date, reminder: boolean) {
     const todo: NewTodo = {
         user_id: userId,
         name: name,
-        due_at: date,
+        due_at: due,
         additional_reminder: reminder,
         updated_at: new Date(),
     }
@@ -412,6 +413,61 @@ export async function updateSettings(userId: number, settings: { name: string, v
     }
 }
 
-export async function todos(/*userId: number*/) {
+export async function toDos(userId: number) {
+    const settings =
+        await db.selectFrom("setting_user")
+            .leftJoin("setting", "setting.id", "setting_id")
+            .select("setting.name")
+            .select("setting_user.value")
+            .where("user_id", "=", userId)
+            .execute()
+    
+    const timeRangePast = settings.find((setting) => setting.name === settingsNames.timeRangePast)?.value
+    const timeRangeFuture = settings.find((setting) => setting.name === settingsNames.timeRangeFuture)?.value
+    const alwaysShowIncomplete = settings.find((setting) => setting.name === settingsNames.alwaysShowIncomplete)?.value
 
+    const showIncomplete = alwaysShowIncomplete === "true" ? true : false
+    const datePast = dateFromRangeValue(timeRangePast, true)
+    const dateFuture = dateFromRangeValue(timeRangeFuture, false)
+    console.log(settings)
+
+    let todos: {
+        name: string;
+        done: boolean;
+        due: Date;
+        reminder: boolean;
+    }[]
+
+    if (showIncomplete) {
+        todos =
+            await db.selectFrom("todo")
+                .select("name")
+                .select("done")
+                .select("due_at as due")
+                .select("additional_reminder as reminder")
+                .where(({ eb, and, or, between }) =>
+                    or([
+                        and([
+                            eb("done", "=", false),
+                            eb("due_at", "<=", dateFuture)
+                        ]),
+                        between("due_at", datePast, dateFuture)
+                    ]))
+                .orderBy("due_at", "desc")
+                .execute()
+    } else {
+        todos =
+            await db.selectFrom("todo")
+                .select("name")
+                .select("done")
+                .select("due_at as due")
+                .select("additional_reminder as reminder")
+                .where(eb =>
+                    eb.between("due_at", datePast, dateFuture)
+                )
+                .orderBy("due_at", "desc")
+                .execute()
+    }
+
+    return todos
 }

@@ -67,7 +67,7 @@ export const TodoModal = ({ isOpen, handleClose }: Props) => {
     const handleSubmit = async () => {
         const response = await trigger({
             name: todo,
-            date: date.toDate(),
+            due: date.toDate(),
             reminder: reminder,
         } as Todo)
 
