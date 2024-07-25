@@ -164,7 +164,7 @@ const AlwaysShowIncomplete = ({ showIncomplete, setMessage, setSuccess }: ShowPr
         <div className="flex flex-col lg:flex-row py-2">
             <div className="lg:w-1/3 px-2 py-2 lg:py-0">
                 <Typography>
-                    Always show incomplete todos
+                    Always show past incomplete todos
                 </Typography>
             </div>
             <div className="">
