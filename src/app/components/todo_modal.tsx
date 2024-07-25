@@ -54,7 +54,7 @@ interface Props {
 }
 
 export const TodoModal = ({ isOpen, handleClose }: Props) => {
-    const defaultDate = dayjs().add(2, "hours").set("seconds", 0)
+    const defaultDate = dayjs().add(2, "h").set("s", 0).set("ms", 0)
     const [todo, setTodo] = useState<string>("")
     const [date, setDate] = useState<Dayjs>(defaultDate)
     const [reminder, setReminder] = useState<boolean>(true)
