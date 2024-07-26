@@ -17,6 +17,7 @@ import PropTypes from "prop-types"
 import useSWRMutation from "swr/mutation"
 import { Todo } from "../utils/definitions/types"
 import Alert from "@mui/material/Alert"
+import { utcString } from "../utils/tools/date"
 
 const fetcher = async (url: string, { arg }: { arg: Todo }) => {
     const response = await fetch(url, {
@@ -52,7 +53,6 @@ interface Props {
     isOpen: boolean,
     handleClose: () => void,
 }
-
 export const TodoModal = ({ isOpen, handleClose }: Props) => {
     const defaultDate = dayjs().add(2, "h").set("s", 0).set("ms", 0)
     const [todo, setTodo] = useState<string>("")
@@ -65,21 +65,27 @@ export const TodoModal = ({ isOpen, handleClose }: Props) => {
     const [success, setSuccess] = useState<boolean>(false)
 
     const handleSubmit = async () => {
-        const response = await trigger({
-            name: todo,
-            due: date.toDate(),
-            reminder: reminder,
-        } as Todo)
-
-        setSuccess(response.message.success)
-        setMessage(response.message.text)
-
-        if (response.message.success) {
-            handleClose()
+        if (todo === "") {
+            setSuccess(false)
+            setMessage("Name is empty.")
+            return
         } else {
-            setTimeout(() => {
-                setMessage("")
-            }, 10000)
+            const response = await trigger({
+                name: todo,
+                due: utcString(date),
+                reminder: reminder,
+            } as Todo)
+    
+            setSuccess(response.message.success)
+            setMessage(response.message.text)
+    
+            if (response.message.success) {
+                handleClose()
+            } else {
+                setTimeout(() => {
+                    setMessage("")
+                }, 10000)
+            }
         }
     }
 
@@ -177,7 +183,6 @@ export const TodoModal = ({ isOpen, handleClose }: Props) => {
         </Modal>
     )
 }
-
 TodoModal.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,

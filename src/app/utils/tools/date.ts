@@ -1,4 +1,6 @@
 import dayjs, { ManipulateType } from "dayjs"
+import utc from "dayjs/plugin/utc"
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter"
 
 function timeUnit(unit: string): ManipulateType {
     let result: ManipulateType
@@ -22,10 +24,12 @@ function timeUnit(unit: string): ManipulateType {
 }
 
 export function dateFromRangeValue(rangeValue: string | undefined, dateInPast: boolean) {
-    let result = dayjs().set("s", 0).set("m", 0).set("h", 0).set("ms", 0)
+    dayjs.extend(utc)
+
+    let result = dayjs().set("s", 0).set("m", 0).set("h", 0).set("ms", 0).utc()
 
     if (rangeValue?.length !== 2) {
-        return result.toDate()
+        return result.toISOString()
     }
 
     const unit = rangeValue[1]
@@ -37,5 +41,35 @@ export function dateFromRangeValue(rangeValue: string | undefined, dateInPast: b
         result = result.add(value, timeUnit(unit))
     }
 
-    return result.toDate()
+    return result.toISOString()
+}
+
+export function indexOfClosestDate(dates: string[]) {
+    dayjs.extend(isSameOrAfter)
+
+    const today = dayjs().set("h", 0).set("m", 0).set("s", 0).set("ms", 0)
+
+    let indexOfSmallestDifference = 1
+    let smallestDifference: number | null = null
+    
+    dates.forEach((value, index) => {
+        const date = dayjs(value)
+
+        if (date.isSameOrAfter(today)) {
+            const difference = date.diff(today)
+
+            if (smallestDifference === null || difference < smallestDifference) {
+                smallestDifference = difference
+                indexOfSmallestDifference = index
+            }
+        }
+    })
+
+    return indexOfSmallestDifference + 1
+}
+
+export function utcString(date: dayjs.Dayjs) {
+    dayjs.extend(utc)
+
+    return date.utc().toISOString()
 }

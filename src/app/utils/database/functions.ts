@@ -4,6 +4,7 @@ import dayjs from "dayjs"
 import { settings as settingsNames } from "../definitions/values"
 import { DeleteResult, UpdateResult } from "kysely"
 import { dateFromRangeValue } from "../tools/date"
+import { Todo } from "../../utils/definitions/types"
 
 function defaultSettings() {
     const defaultTimeRangePast: NewSettingUser = {
@@ -311,7 +312,7 @@ export async function removeSession(key: string, userId: number) {
     return await query.executeTakeFirst()
 }
 
-export async function newTodo(userId: number, name: string, due: Date, reminder: boolean) {
+export async function newTodo(userId: number, name: string, due: string, reminder: boolean) {
     const todo: NewTodo = {
         user_id: userId,
         name: name,
@@ -413,7 +414,7 @@ export async function updateSettings(userId: number, settings: { name: string, v
     }
 }
 
-export async function toDos(userId: number) {
+export async function todos(userId: number) {
     const settings =
         await db.selectFrom("setting_user")
             .leftJoin("setting", "setting.id", "setting_id")
@@ -429,14 +430,8 @@ export async function toDos(userId: number) {
     const showIncomplete = alwaysShowIncomplete === "true" ? true : false
     const datePast = dateFromRangeValue(timeRangePast, true)
     const dateFuture = dateFromRangeValue(timeRangeFuture, false)
-    console.log(settings)
 
-    let todos: {
-        name: string;
-        done: boolean;
-        due: Date;
-        reminder: boolean;
-    }[]
+    let todos: Todo[]
 
     if (showIncomplete) {
         todos =
@@ -444,6 +439,7 @@ export async function toDos(userId: number) {
                 .select("name")
                 .select("done")
                 .select("due_at as due")
+                .select("id")
                 .select("additional_reminder as reminder")
                 .where(({ eb, and, or, between }) =>
                     or([
@@ -462,6 +458,7 @@ export async function toDos(userId: number) {
                 .select("done")
                 .select("due_at as due")
                 .select("additional_reminder as reminder")
+                .select("id")
                 .where(eb =>
                     eb.between("due_at", datePast, dateFuture)
                 )

@@ -1,5 +1,5 @@
 "use client"
-import { useState, MouseEvent as ReactMouseEvent, SyntheticEvent as ReactSyntheticEvent } from "react"
+import { useState, MouseEvent as ReactMouseEvent, SyntheticEvent as ReactSyntheticEvent, useEffect } from "react"
 import Typography from "@mui/material/Typography"
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp"
 import Accordion from "@mui/material/Accordion"
@@ -12,6 +12,7 @@ import MenuItem from "@mui/material/MenuItem"
 import useSWR from "swr"
 import { Todo, TodoGroup } from "../utils/definitions/types"
 import dayjs from "dayjs"
+import { indexOfClosestDate } from "../utils/tools/date"
 
 const fetcher = (url: URL | RequestInfo, init?: RequestInit | undefined) => fetch(url, init).then((res) => res.json())
 
@@ -39,18 +40,34 @@ function addTodos(todos: Todo[], indexDay: number) {
 export default function Todos() {
     const elements: JSX.Element[] = []
 
-    const { data } = useSWR("/api/todos", fetcher)
-
     const iconStyle = {
         fontSize: "0.9rem",
         color: "white",
     }
 
+    const uniqueDates = (todos: Todo[]) => {
+        return Array.from(new Set(todos.map((item: Todo) => 
+            dayjs(item.due).format("YYYY-MM-DD")
+        )))
+    }
+
+    const { data } = useSWR("/api/todos", fetcher)
     const [contextMenu, setContextMenu] = useState<{
         mouseX: number;
         mouseY: number;
     } | null>(null)
+    const [expanded, setExpanded] = useState<string | false>(false)
+
+    useEffect(() => {
+        if (data?.message) {
+            const todos = data.message as Todo[]
+
+            const dates = uniqueDates(todos)
     
+            setExpanded("panel" + indexOfClosestDate(dates))
+        }
+    }, [data])
+
     const handleContextMenu = (event: ReactMouseEvent) => {
         event.preventDefault()
 
@@ -70,15 +87,26 @@ export default function Todos() {
         }
     }
 
-    const [expanded, setExpanded] = useState<string | false>("panel1")
-
     const handleChange =
-        (panel: string) => (event: ReactSyntheticEvent, newExpanded: boolean) => {
-            setExpanded(newExpanded ? panel : false)
-        }
+    (panel: string) => (event: ReactSyntheticEvent, newExpanded: boolean) => {
+        setExpanded(newExpanded ? panel : false)
+    }
 
     if (data) {
-        (data.message as TodoGroup[]).forEach((todoGroup, index) => {
+        const todos = data.message as Todo[]
+
+        const dates = uniqueDates(todos)
+
+        const todoGroups: TodoGroup[] = []
+
+        dates.forEach(date => {
+            todoGroups.push({
+                date: new Date(date),
+                todos: todos.filter(todo => dayjs(todo.due).format("YYYY-MM-DD") === dayjs(date).format("YYYY-MM-DD")),
+            })
+        })
+
+        todoGroups.forEach((todoGroup, index) => {
             elements.push(
                 <div className="xl:w-3/4 3xl:w-2/3 4xl:w-1/2 m-auto" key={"day" + (index + 1)}>
                     <Accordion

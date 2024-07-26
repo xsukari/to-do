@@ -24,7 +24,7 @@ export interface TodoTable {
     user_id: number
     name: string
     done: ColumnType<boolean, never>
-    due_at: ColumnType<Date>
+    due_at: string
     additional_reminder: boolean
     updated_at: ColumnType<Date>
     created_at: ColumnType<Date, never, never>
