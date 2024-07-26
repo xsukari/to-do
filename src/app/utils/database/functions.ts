@@ -441,13 +441,13 @@ export async function todos(userId: number) {
                 .select("due_at as due")
                 .select("id")
                 .select("additional_reminder as reminder")
-                .where(({ eb, and, or, between }) =>
+                .where(({ eb, and, or, betweenSymmetric }) =>
                     or([
                         and([
                             eb("done", "=", false),
                             eb("due_at", "<=", dateFuture)
                         ]),
-                        between("due_at", datePast, dateFuture)
+                        betweenSymmetric("due_at", datePast, dateFuture)
                     ]))
                 .orderBy("due_at", "desc")
                 .execute()
@@ -460,7 +460,7 @@ export async function todos(userId: number) {
                 .select("additional_reminder as reminder")
                 .select("id")
                 .where(eb =>
-                    eb.between("due_at", datePast, dateFuture)
+                    eb.betweenSymmetric("due_at", datePast, dateFuture)
                 )
                 .orderBy("due_at", "desc")
                 .execute()

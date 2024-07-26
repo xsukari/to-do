@@ -26,7 +26,7 @@ function timeUnit(unit: string): ManipulateType {
 export function dateFromRangeValue(rangeValue: string | undefined, dateInPast: boolean) {
     dayjs.extend(utc)
 
-    let result = dayjs().set("s", 0).set("m", 0).set("h", 0).set("ms", 0).utc()
+    let result = dayjs().utc()
 
     if (rangeValue?.length !== 2) {
         return result.toISOString()
@@ -36,8 +36,10 @@ export function dateFromRangeValue(rangeValue: string | undefined, dateInPast: b
     const value = parseInt(rangeValue[0])
 
     if (dateInPast) {
+        result = result.set("h", 0).set("m", 0).set("s", 0).set("ms", 0)
         result = result.subtract(value, timeUnit(unit))
     } else {
+        result = result.set("h", 23).set("m", 59).set("s", 59).set("ms", 999)
         result = result.add(value, timeUnit(unit))
     }
 
