@@ -269,12 +269,12 @@ const TimeRange = ({ rangePast, rangeFuture, setMessage, setSuccess }: TimeProps
                 </Typography>
             </div>
             <div className="flex flex-grow px-2">
-                <div className="w-1/5 flex items-center">
+                <div className="w-[13%] flex items-center">
                     <Typography>
                         From
                     </Typography>
                 </div>
-                <div className="w-1/5">
+                <div className="w-[37%]">
                     <FormControl fullWidth>
                         <Select
                             value={timeRangePast}
@@ -290,14 +290,14 @@ const TimeRange = ({ rangePast, rangeFuture, setMessage, setSuccess }: TimeProps
                         </Select>
                     </FormControl>
                 </div>
-                <div className="w-1/5">
+                <div className="w-[5%]">
                 </div>
-                <div className="w-1/5 flex items-center">
+                <div className="w-[8%] flex items-center">
                     <Typography>
                         to
                     </Typography>
                 </div>
-                <div className="w-1/5">
+                <div className="w-[37%]">
                     <FormControl fullWidth>
                         <Select
                             value={timeRangeFuture}
