@@ -51,7 +51,7 @@ export function indexOfClosestDate(dates: string[]) {
 
     const today = dayjs().set("h", 0).set("m", 0).set("s", 0).set("ms", 0)
 
-    let indexOfSmallestDifference = 1
+    let indexOfSmallestDifference = 0
     let smallestDifference: number | null = null
     
     dates.forEach((value, index) => {
