@@ -1,3 +1,5 @@
+# 2024-09-08 - DEVELOPMENT WILL RESUME SHORTLY, I was working on other projects, mostly some IRL DIY things
+
 # THIS PROJECT IS STILL HEAVILY WIP
 
 ## About this project
